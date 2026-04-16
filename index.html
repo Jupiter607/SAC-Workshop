@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Coding the Future of SAC</title>
+  <meta name="description" content="A 2-hour hands-on Google AI Studio workshop for Santa Ana College faculty and administration." />
+  <meta name="theme-color" content="#0b0e17" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #C8102E;
+      --gold: #E5A823;
+      --accent: #00c896;
+      --bg: #0b0e17;
+      --surface: #111520;
+      --surface2: #181d2e;
+      --border: rgba(255,255,255,0.08);
+      --text: #eef0f6;
+      --muted: #8892a4;
+      --heading: 'Syne', sans-serif;
+      --body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--red), var(--gold), var(--accent));
+      z-index: 200;
+      transition: width 0.15s linear;
+      will-change: width;
+    }
+
+    nav {
+      position: sticky;
+      top: 3px;
+      z-index: 100;
+      background: rgba(11,14,23,0.92);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-brand {
+      font-family: var(--heading);
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .nav-brand .dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; display: inline-block; }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      transition: color 0.25s, background 0.25s;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .nav-toggle:hover { background: rgba(255,255,255,0.06); }
+    .nav-toggle svg { display: block; }
+
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5rem 1.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,16,46,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(229,168,35,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(200,16,46,0.12);
+      border: 1px solid rgba(200,16,46,0.3);
+      color: #ff7a8a;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: var(--heading);
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      max-width: 800px;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+      position: relative;
+    }
+
+    .hero h1 em { color: var(--red); font-style: normal; }
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+      position: relative;
+    }
+
+    .hero-chips {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+      position: relative;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    .chip .pip { width: 5px; height: 5px; border-radius: 50%; }
+
+    .hero-cta {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s 0.4s ease both;
+      position: relative;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: #e01535; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,16,46,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.25); background: var(--surface); transform: translateY(-1px); }
+    .btn-outline:active { transform: translateY(0); }
+
+    section { padding: 5rem 1.5rem; max-width: 1000px; margin: 0 auto; }
+    section[id] { scroll-margin-top: 68px; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: var(--heading);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .section-lead {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 3rem;
+    }
+
+    .agenda-track {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .agenda-track::before {
+      content: '';
+      position: absolute;
+      left: 100px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--border) 10%, var(--border) 90%, transparent);
+    }
+
+    .agenda-item {
+      display: flex;
+      gap: 0;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .agenda-item:last-child { border-bottom: none; }
+
+    .agenda-time {
+      width: 100px;
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--heading);
+      color: var(--gold);
+      padding-top: 4px;
+    }
+
+    .agenda-node {
+      width: 32px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+
+    .agenda-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .agenda-body { padding-left: 1rem; flex: 1; }
+
+    .agenda-phase {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .agenda-body h3 {
+      font-family: var(--heading);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .agenda-body p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    .agenda-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .card-accent { height: 3px; }
+    .card-body { padding: 1.25rem 1.4rem 1.4rem; }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-audience {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 5px;
+    }
+
+    .aud-faculty { background: rgba(0,200,150,0.12); color: #00c896; }
+    .aud-admin { background: rgba(124,106,255,0.12); color: #a598ff; }
+
+    .card-title {
+      font-family: var(--heading);
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .card-vibe {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+
+    .card-capability {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .card-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-family: var(--body);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .card-toggle:hover { background: rgba(0,200,150,0.07); border-color: var(--accent); }
+
+    .card-steps {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 1px solid transparent;
+    }
+
+    .card-steps.open {
+      max-height: 600px;
+      opacity: 1;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top-color: var(--border);
+    }
+
+    .step-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .step-item:last-child { margin-bottom: 0; }
+
+    .step-badge {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .step-item em { color: var(--text); font-style: italic; }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .check-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .check-row:hover { border-color: rgba(255,255,255,0.14); background: var(--surface2); }
+    .check-row:active { transform: scale(0.98); }
+    .check-row.done { border-color: rgba(0,200,150,0.25); }
+    .check-row.done .check-text strong { text-decoration: line-through; color: var(--muted); }
+
+    .check-box {
+      width: 22px; height: 22px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 1px;
+    }
+
+    .check-row.done .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .check-row.done .check-box::after {
+      content: '';
+      width: 5px; height: 9px;
+      border: 2px solid #0b0e17;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+      display: block;
+    }
+
+    .check-text strong {
+      display: block;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 2px;
+      transition: color 0.2s, text-decoration 0.2s;
+    }
+
+    .check-text span { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    .checklist-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .checklist-bar-track {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .checklist-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .checklist-count {
+      font-weight: 600;
+      font-family: var(--heading);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .temp-guide {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .temp-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .temp-slider-wrap {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #4fc3f7, #00c896, #ff9800, #e53935);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .temp-cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      font-size: 13px;
+    }
+
+    .temp-case h4 { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    .temp-case ul { list-style: none; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .temp-case ul li::before { content: '\2192\00a0'; color: var(--accent); }
+
+    .system-instr-box {
+      margin-top: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    .formula-code {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-family: 'DM Sans', monospace;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer strong { color: var(--red); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      section { padding: 3.5rem 1.25rem; }
+      .hero { min-height: 85vh; padding: 4rem 1.25rem 2.5rem; }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      body { font-size: 14px; }
+      nav { padding: 0 1rem; }
+      .nav-links {
+        position: fixed;
+        top: 59px;
+        left: 0; right: 0;
+        background: rgba(11,14,23,0.97);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 0.5rem 1rem 1rem;
+        gap: 0;
+        transform: translateY(-110%);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.25s ease;
+        pointer-events: none;
+      }
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav-links a {
+        padding: 0.75rem 0.85rem;
+        font-size: 15px;
+        border-radius: 8px;
+      }
+      .nav-toggle { display: block; }
+      .hero { min-height: 80vh; padding: 3rem 1rem 2rem; }
+      .hero h1 { font-size: clamp(1.8rem, 9vw, 2.6rem); }
+      .hero-sub { font-size: 15px; }
+      .hero-chips { gap: 0.5rem; }
+      .chip { font-size: 11px; padding: 5px 11px; }
+      .agenda-track::before { left: 12px; }
+      .agenda-item { flex-direction: column; gap: 0; position: relative; padding-left: 0; }
+      .agenda-time { width: auto; font-size: 11px; margin-bottom: 6px; padding-left: 28px; }
+      .agenda-node { position: absolute; left: 0; width: 24px; }
+      .agenda-body { padding-left: 28px; }
+      .agenda-body h3 { font-size: 16px; }
+      .agenda-body p { font-size: 13px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:hover { transform: none; }
+      .checklist-grid { grid-template-columns: 1fr; }
+      .temp-cases { grid-template-columns: 1fr; }
+      .section-lead { font-size: 14px; margin-bottom: 2rem; }
+      .btn-primary, .btn-outline { padding: 11px 24px; font-size: 13px; }
+    }
+
+    @media (max-width: 370px) {
+      .hero h1 { font-size: 1.6rem; }
+      .hero-chips { gap: 0.35rem; }
+      .chip { font-size: 10px; padding: 4px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<nav>
+  <div class="nav-brand">
+    <span class="dot"></span>
+    Vibe Coding SAC
+  </div>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">
+    <svg id="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#agenda" onclick="closeNav()">Agenda</a></li>
+    <li><a href="#projects" onclick="closeNav()">Projects</a></li>
+    <li><a href="#checklist" onclick="closeNav()">Checklist</a></li>
+    <li><a href="#tips" onclick="closeNav()">AI Studio Tips</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">
+    <span style="width:6px;height:6px;background:var(--red);border-radius:50%;display:inline-block;"></span>
+    Santa Ana College — Spring 2026
+  </div>
+  <h1>Vibe Coding the<br /><em>Future</em> of <span>SAC</span></h1>
+  <p class="hero-sub">A 2-hour hands-on workshop using Google AI Studio to build real tools — no syntax required.</p>
+  <div class="hero-chips">
+    <div class="chip"><span class="pip" style="background:var(--accent)"></span> 120 minutes</div>
+    <div class="chip"><span class="pip" style="background:var(--gold)"></span> Google AI Studio</div>
+    <div class="chip"><span class="pip" style="background:#7c6aff"></span> Gemini 1.5 Pro</div>
+    <div class="chip"><span class="pip" style="background:var(--red)"></span> Faculty & Admin</div>
+  </div>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">Choose Your Project</a>
+    <a href="#agenda" class="btn-outline">View Agenda</a>
+  </div>
+</section>
+
+<section id="agenda">
+  <div class="reveal">
+    <p class="section-eyebrow">Sprint Schedule</p>
+    <h2 class="section-title">Today's 120-Minute Agenda</h2>
+    <p class="section-lead">Four focused phases — from mindset shift to deployed tool.</p>
+  </div>
+  <div class="agenda-track">
+    <div class="agenda-item reveal">
+      <div class="agenda-time">0 – 15 min</div>
+      <div class="agenda-node"><div class="agenda-dot" style="border-color:var(--red);"></div></div>
+      <div class="agenda-body">
+        <div class="agenda-phase" style="color:var(--red);">Phase 1</div>
+        <h3>The Vibe Shift</h3>
+        <p>Move from "search" to "steer." Understand that natural language is the new code. Introduction to Google AI Studio — the interface, the model selector, and why System Instructions change everything.</p>
+        <div class="agenda-tags">
+          <span class="tag">Mindset</span>
+          <span class="tag">AI Studio Tour</span>
+          <span class="tag">System Instructions intro</span>
+        </div>
+      </div>
+    </div>
+    <div class="agenda-item reveal">
+      <div class="agenda-time">15 – 45 min</div>
+      <div class="agenda-node"><div class="agenda-dot" style="border-color:var(--gold);"></div></div>
+      <div class="agenda-body">
+        <div class="agenda-phase" style="color:var(--gold);">Phase 2</div>
+        <h3>AI Studio Sandbox</h3>
+        <p>Hands-on exploration. Set up System Instructions. Adjust Temperature from 0.0 to 1.0 and feel the difference. Upload a PDF, an image, or a video clip and watch Gemini work across modalities.</p>
+        <div class="agenda-tags">
+          <span class="tag">System Instructions</span>
+          <span class="tag">Temperature</span>
+          <span class="tag">PDF / Video upload</span>
+          <span class="tag">Multimodality</span>
+        </div>
+      </div>
+    </div>
+    <div class="agenda-item reveal">
+      <div class="agenda-time">45 – 105 min</div>
+      <div class="agenda-node"><div class="agenda-dot" style="border-color:var(--accent);"></div></div>
+      <div class="agenda-body">
+        <div class="agenda-phase" style="color:var(--accent);">Phase 3 — The Big One</div>
+        <h3>Prototyping Lab</h3>
+        <p>Choose one of 6 projects below and build a functional mini-tool from scratch. You have 60 minutes. Iterate at least 3 times. Share your result with the person next to you before time is called.</p>
+        <div class="agenda-tags">
+          <span class="tag">60 min build sprint</span>
+          <span class="tag">Choose 1 of 6 projects</span>
+          <span class="tag">Pair & share</span>
+        </div>
+      </div>
+    </div>
+    <div class="agenda-item reveal">
+      <div class="agenda-time">105 – 120 min</div>
+      <div class="agenda-node"><div class="agenda-dot" style="border-color:#7c6aff;"></div></div>
+      <div class="agenda-body">
+        <div class="agenda-phase" style="color:#7c6aff;">Phase 4</div>
+        <h3>Export & Deploy</h3>
+        <p>Click "Get Code" in AI Studio — even if you don't write code, Gemini will explain how to paste it into Google Apps Script to make your tool live in Sheets or Docs. Save your prompt as a reusable Prompt File.</p>
+        <div class="agenda-tags">
+          <span class="tag">Get Code button</span>
+          <span class="tag">Google Apps Script</span>
+          <span class="tag">Prompt Files</span>
+          <span class="tag">Share with department</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="reveal">
+    <p class="section-eyebrow">Prototyping Lab</p>
+    <h2 class="section-title">Choose Your Project</h2>
+    <p class="section-lead">Pick one. You have 60 minutes. Iterate at least 3 times before declaring victory.</p>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#C8102E,#ff6b6b);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 01</span><span class="card-audience aud-faculty">Faculty</span></div>
+        <div class="card-title">Syllabus Sensei</div>
+        <div class="card-vibe">Drop a PDF syllabus, get a student-facing FAQ and a Google Calendar-ready CSV of all deadlines.</div>
+        <div class="card-capability" style="background:rgba(200,16,46,0.1);color:#ff8a8a;">Multimodal PDF Analysis</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>Open AI Studio → New Prompt → Upload your syllabus PDF via the paperclip icon.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>In System Instructions: <em>"You are an academic advisor at SAC. Be supportive and student-friendly."</em></div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Create a 10-question student FAQ and a Google Calendar-ready CSV of all deadlines from this syllabus."</em></div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Download the CSV output → open Google Calendar → import the file. Share the FAQ with students in Canvas.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#E5A823,#ffd97d);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 02</span><span class="card-audience aud-faculty">Faculty</span></div>
+        <div class="card-title">Equity Auditor</div>
+        <div class="card-vibe">Audit assignments for hidden curriculum bias, ESL accessibility, and Guided Pathways alignment.</div>
+        <div class="card-capability" style="background:rgba(229,168,35,0.1);color:#ffd97d;">Instructional Design</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>Paste your assignment prompt text directly into AI Studio chat.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>Set temperature to 0.4 — balanced for both consistency and creative suggestions.</div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Review this for hidden curriculum bias. Suggest 3 ways to make it more accessible for ESL students and first-gen learners at SAC."</em></div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Ask it to fully rewrite the assignment using its own suggestions. Compare before and after.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#00c896,#00f5cc);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 03</span><span class="card-audience aud-faculty">Faculty</span></div>
+        <div class="card-title">Lecture → Micro-Lesson</div>
+        <div class="card-vibe">Upload a Zoom recording. Get timestamped notes and a Canvas-compatible quiz in minutes.</div>
+        <div class="card-capability" style="background:rgba(0,200,150,0.1);color:#00c896;">Video Intelligence</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>Upload your .mp4 lecture file in AI Studio (Gemini 1.5 Pro supports up to 1 hour of video).</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a curriculum specialist. Be concise and pedagogically sound."</em></div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Identify the 3 most critical concepts. Provide a time-stamped summary and a 5-question Canvas-compatible quiz."</em></div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Copy the quiz questions directly into Canvas New Quizzes. Save as a Prompt File for future lectures.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#7c6aff,#a598ff);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 04</span><span class="card-audience aud-admin">Admin</span></div>
+        <div class="card-title">Admin Workflow Automator</div>
+        <div class="card-vibe">Paste messy meeting notes, get a clean action-item table with assigned owners and deadlines.</div>
+        <div class="card-capability" style="background:rgba(124,106,255,0.1);color:#a598ff;">System Prompting</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>Select Chat Prompt mode in AI Studio (not Generate Text — this matters).</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a Program Manager at SAC. Extract action items, deadlines, and stakeholders. Format as a markdown table."</em></div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Paste your raw meeting notes or Zoom transcript into the chat and hit Run.</div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Copy the markdown table into a Google Doc. Save this as a Prompt File — use it after every meeting.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#ff6b9d,#ffa8c5);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 05</span><span class="card-audience aud-faculty">Faculty</span></div>
+        <div class="card-title">Personalized Tutor</div>
+        <div class="card-vibe">Build a Socratic AI tutor for your subject — gives hints, never answers directly. Set the behavior via few-shot examples.</div>
+        <div class="card-capability" style="background:rgba(255,107,157,0.1);color:#ffa8c5;">Few-Shot Prompting</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>System Instructions: <em>"You are a patient SAC tutor. Never give direct answers. Instead, ask a guiding question that helps the student arrive at the answer themselves."</em></div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>Add 3 few-shot examples: write a student question, then write the Socratic hint response you want. Repeat 3 times.</div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Test it — try to "break" it by demanding a direct answer. Refine your instructions until it holds.</div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Save as a Prompt File and share the link with students as a study companion.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#4ecdc4,#7dedea);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 06</span><span class="card-audience aud-admin">Admin</span></div>
+        <div class="card-title">SAC Transfer Tracker</div>
+        <div class="card-vibe">Live-search UC/CSU transfer requirements and auto-generate a comparison chart for your students.</div>
+        <div class="card-capability" style="background:rgba(78,205,196,0.1);color:#7dedea;">Google Search Tool</div>
+        <button class="card-toggle" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>In AI Studio, toggle ON the "Google Search" tool in the Tools panel on the right sidebar.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a SAC transfer counselor. Always cite the source URL for every requirement you list."</em></div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Search for 2026 CSU transfer requirements for Business Administration and create a comparison chart for our students."</em></div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Paste the output into a Google Sheet and share with the counseling department.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="checklist">
+  <div class="reveal">
+    <p class="section-eyebrow">Pre-Build Ritual</p>
+    <h2 class="section-title">The Vibe Coding Checklist</h2>
+    <p class="section-lead">Run through this before every AI Studio build. Tap each item to check it off.</p>
+  </div>
+  <div class="checklist-progress reveal" id="checkProgress">
+    <span class="checklist-count" id="checkCount">0 / 8</span>
+    <div class="checklist-bar-track"><div class="checklist-bar-fill" id="checkBar"></div></div>
+  </div>
+  <div class="checklist-grid">
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Select Gemini 1.5 Pro</strong><span>Use Pro for complex tasks like PDF analysis and video. Flash for quick Q&A.</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Set the Vibe — System Instructions</strong><span>Define a role before asking anything. "You are a SAC Dean of Instruction. Be professional and student-focused."</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Set Temperature</strong><span>0.0–0.3 for grading/facts. 0.7–1.0 for creative writing and brainstorming.</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Upload your context file</strong><span>Use the paperclip — PDFs, videos, images. Don't copy-paste a wall of text when a file upload works.</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Iterate at least 3 times</strong><span>First output is a draft. Push back. Ask for alternatives. "Make this more concise" or "rewrite for a student audience."</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Save as a Prompt File</strong><span>Click Save in AI Studio to create a reusable tool. Name it clearly and share with your department.</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Click "Get Code" to Deploy</strong><span>Paste the generated code into Google Apps Script to embed your tool in Sheets or Docs.</span></div></div>
+    <div class="check-row reveal" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Verify AI output critically</strong><span>Always fact-check transfer requirements, policy details, and dates before sharing with students.</span></div></div>
+  </div>
+</section>
+
+<section id="tips">
+  <div class="reveal">
+    <p class="section-eyebrow">Quick Reference</p>
+    <h2 class="section-title">AI Studio Tips</h2>
+    <p class="section-lead">The two settings that change everything: System Instructions and Temperature.</p>
+  </div>
+  <div class="temp-guide reveal">
+    <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:1rem;">Temperature Guide</h3>
+    <div class="temp-label-row"><span>0.0 — Precise & Consistent</span><span>1.0 — Creative & Varied</span></div>
+    <div class="temp-slider-wrap"></div>
+    <div class="temp-cases">
+      <div class="temp-case">
+        <h4 style="color:#4fc3f7;">Use 0.0 – 0.3 for:</h4>
+        <ul><li>Grading rubrics</li><li>Data extraction from PDFs</li><li>Action item tables</li><li>Transfer requirement charts</li><li>Quiz question generation</li></ul>
+      </div>
+      <div class="temp-case">
+        <h4 style="color:#ff9800;">Use 0.7 – 1.0 for:</h4>
+        <ul><li>Brainstorming lesson ideas</li><li>Rewriting assignments creatively</li><li>Generating diverse student examples</li><li>Writing equity audit suggestions</li><li>Building Socratic tutor personas</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="system-instr-box reveal">
+    <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:1rem;">System Instructions Formula</h3>
+    <div class="formula-code">
+      You are a <span style="color:#00c896;">[role]</span> at Santa Ana College.<br/>
+      Your audience is <span style="color:#E5A823;">[who]</span>.<br/>
+      Always <span style="color:#ff8a8a;">[behavior 1]</span> and <span style="color:#ff8a8a;">[behavior 2]</span>.<br/>
+      Never <span style="color:#a598ff;">[thing to avoid]</span>.<br/>
+      Format your output as <span style="color:#7dedea;">[format: table / CSV / markdown / bullet list]</span>.
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:0.75rem;">Fill in the brackets before you ask your first question. This single step accounts for ~80% of quality improvement.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Built for <strong>Santa Ana College</strong> — Vibe Coding the Future of SAC &nbsp;·&nbsp; Spring 2026</p>
+  <p style="margin-top:6px;font-size:12px;">Google AI Studio &nbsp;·&nbsp; Gemini 1.5 Pro &nbsp;·&nbsp; Faculty & Administration Workshop</p>
+</footer>
+
+<script>
+  (function() {
+    var progressEl = document.getElementById('progress');
+    var ticking = false;
+    var hamburgerSVG = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+    var closeSVG = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>';
+
+    function updateProgress() {
+      var scrolled = window.scrollY;
+      var total = document.body.scrollHeight - window.innerHeight;
+      var pct = total > 0 ? Math.min((scrolled / total) * 100, 100) : 0;
+      progressEl.style.width = pct + '%';
+      ticking = false;
+    }
+
+    var sections = document.querySelectorAll('section[id]');
+    var navLinks = document.querySelectorAll('.nav-links a');
+    function updateActiveNav() {
+      var scrollY = window.scrollY + 120;
+      var current = '';
+      for (var i = 0; i < sections.length; i++) {
+        if (scrollY >= sections[i].offsetTop) current = sections[i].id;
+      }
+      for (var j = 0; j < navLinks.length; j++) {
+        navLinks[j].classList.toggle('active', navLinks[j].getAttribute('href') === '#' + current);
+      }
+    }
+
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          updateProgress();
+          updateActiveNav();
+          closeNav();
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    var reveals = document.querySelectorAll('.reveal');
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el) { revealObserver.observe(el); });
+
+    document.addEventListener('click', function(e) {
+      var navMenu = document.getElementById('navLinks');
+      if (navMenu.classList.contains('open') && !e.target.closest('nav')) closeNav();
+    });
+
+    window.toggleNav = function() {
+      var nav = document.getElementById('navLinks');
+      var icon = document.getElementById('nav-icon');
+      var isOpen = nav.classList.toggle('open');
+      icon.innerHTML = isOpen ? closeSVG : hamburgerSVG;
+    };
+
+    window.closeNav = closeNav;
+    function closeNav() {
+      var nav = document.getElementById('navLinks');
+      if (!nav.classList.contains('open')) return;
+      nav.classList.remove('open');
+      document.getElementById('nav-icon').innerHTML = hamburgerSVG;
+    }
+
+    window.toggleSteps = function(btn) {
+      var steps = btn.nextElementSibling;
+      var arrow = btn.querySelector('.arrow');
+      var label = btn.querySelector('span:first-child');
+      var isOpen = steps.classList.toggle('open');
+      arrow.textContent = isOpen ? '\u2191' : '\u2193';
+      label.textContent = isOpen ? 'Hide steps' : 'View build steps';
+    };
+
+    window.toggleCheck = function(row) {
+      row.classList.toggle('done');
+      updateChecklistProgress();
+      saveChecklist();
+    };
+
+    function updateChecklistProgress() {
+      var total = document.querySelectorAll('.check-row').length;
+      var done = document.querySelectorAll('.check-row.done').length;
+      document.getElementById('checkCount').textContent = done + ' / ' + total;
+      document.getElementById('checkBar').style.width = (done / total * 100) + '%';
+    }
+
+    function saveChecklist() {
+      var rows = document.querySelectorAll('.check-row');
+      var state = [];
+      rows.forEach(function(r) { state.push(r.classList.contains('done')); });
+      try { localStorage.setItem('sac-checklist', JSON.stringify(state)); } catch(e) {}
+    }
+
+    function restoreChecklist() {
+      try {
+        var state = JSON.parse(localStorage.getItem('sac-checklist'));
+        if (!state) return;
+        var rows = document.querySelectorAll('.check-row');
+        state.forEach(function(done, i) { if (done && rows[i]) rows[i].classList.add('done'); });
+        updateChecklistProgress();
+      } catch(e) {}
+    }
+
+    restoreChecklist();
+  })();
+</script>
+</body>
+</html>
