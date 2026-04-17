@@ -134,7 +134,8 @@
     .nav-toggle svg { display: block; }
 
     .hero {
-      min-height: 92vh;
+      min-height: min(92vh, 880px);
+      min-height: min(92dvh, 880px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -432,10 +433,47 @@
     .tag-popover.flip::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--border); }
     @keyframes popIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
+    #projects { max-width: 1320px; }
+
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+      gap: 1.1rem;
+      align-items: start;
+    }
+
+    @media (min-width: 900px) {
+      .project-card.expanded {
+        grid-column: 1 / -1;
+        position: relative;
+        z-index: 2;
+      }
+      .project-card.expanded:hover { transform: none; }
+      .project-card.expanded .card-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+        gap: clamp(1.25rem, 3vw, 2.25rem);
+        align-items: start;
+        padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.75rem);
+      }
+      .project-card.expanded .card-meta,
+      .project-card.expanded .card-title,
+      .project-card.expanded .card-vibe,
+      .project-card.expanded .card-capability,
+      .project-card.expanded .card-toggle { grid-column: 1; }
+      .project-card.expanded .card-steps {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        padding-left: clamp(1.25rem, 2.5vw, 2rem);
+        border-left: 1px solid var(--border);
+        align-self: stretch;
+      }
+      .project-card.expanded .card-vibe { max-width: 48ch; }
+      .project-card.expanded .sample-text { max-height: clamp(320px, 55vh, 520px); }
+      .project-card.expanded .step-item { font-size: clamp(13.5px, 1.15vw, 15px); line-height: 1.7; }
     }
 
     .project-card {
@@ -443,6 +481,7 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
+      min-width: 0;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
 
@@ -453,7 +492,7 @@
     }
 
     .card-accent { height: 3px; }
-    .card-body { padding: 1.25rem 1.4rem 1.4rem; }
+    .card-body { padding: 1.25rem clamp(1rem, 3vw, 1.4rem) 1.4rem; }
 
     .card-meta {
       display: flex;
@@ -543,6 +582,7 @@
 
     .card-steps.open {
       max-height: none;
+      overflow: visible;
       opacity: 1;
       margin-top: 1rem;
       padding-top: 1rem;
@@ -552,8 +592,9 @@
     .step-item {
       display: flex;
       gap: 10px;
-      margin-bottom: 10px;
-      font-size: 13px;
+      margin-bottom: 12px;
+      font-size: clamp(13px, 2.5vw, 14px);
+      line-height: 1.6;
       color: var(--muted);
       line-height: 1.55;
     }
@@ -574,6 +615,7 @@
       margin-top: 2px;
     }
 
+    .step-item > div:last-child { min-width: 0; overflow-wrap: break-word; }
     .step-item em { color: var(--text); font-style: italic; }
 
     .checklist-grid {
@@ -823,14 +865,17 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .sample-label {
-      font-size: 11px;
+      font-size: clamp(10.5px, 2vw, 11px);
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--gold);
+      min-width: 0;
     }
 
     .copy-btn {
@@ -854,13 +899,15 @@
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px;
-      font-size: 11.5px;
+      padding: clamp(10px, 3vw, 14px);
+      font-size: clamp(12px, 2.5vw, 13.5px);
+      line-height: 1.7;
       color: var(--muted);
-      line-height: 1.65;
       white-space: pre-wrap;
       word-wrap: break-word;
-      max-height: 220px;
+      overflow-wrap: break-word;
+      max-height: clamp(200px, 40vh, 320px);
+      overflow-x: auto;
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: rgba(255,255,255,0.1) transparent;
@@ -919,8 +966,12 @@
 
     @media (max-width: 768px) {
       section { padding: 3.5rem 1.25rem; }
-      .hero { min-height: 85vh; padding: 4rem 1.25rem 2.5rem; }
+      .hero { min-height: 85vh; min-height: 85dvh; padding: 4rem 1.25rem 2.5rem; }
       .projects-grid { grid-template-columns: 1fr 1fr; }
+      .card-body { padding: 1.1rem 1rem 1.2rem; }
+      .card-title { font-size: 16px; }
+      .step-item { font-size: 13.5px; }
+      .sample-text { font-size: 12.5px; }
     }
 
     @media (max-width: 600px) {
@@ -953,7 +1004,7 @@
         border-radius: 8px;
       }
       .nav-toggle { display: block; }
-      .hero { min-height: 80vh; padding: 3rem 1rem 2rem; }
+      .hero { min-height: 80vh; min-height: 80dvh; padding: 3rem 1rem 2rem; }
       .hero h1 { font-size: clamp(1.8rem, 9vw, 2.6rem); }
       .hero-sub { font-size: 15px; }
       .hero-chips { gap: 0.5rem; }
@@ -967,10 +1018,29 @@
       .agenda-body p { font-size: 13px; }
       .projects-grid { grid-template-columns: 1fr; }
       .project-card:hover { transform: none; }
+      .card-body { padding: 1rem 0.85rem 1.1rem; }
+      .card-title { font-size: 16px; }
+      .card-vibe { font-size: 12.5px; }
+      .card-capability { font-size: 10.5px; padding: 4px 8px; }
+      .card-toggle { font-size: 13px; padding: 10px 14px; }
+      .step-item { flex-direction: column; gap: 6px; font-size: 13.5px; }
+      .step-badge { align-self: flex-start; }
+      .sample-text { font-size: 12.5px; max-height: clamp(180px, 50vh, 300px); padding: 10px; }
+      .sample-header { flex-wrap: wrap; gap: 6px; }
       .checklist-grid { grid-template-columns: 1fr; }
       .temp-scale { grid-template-columns: 1fr; }
       .section-lead { font-size: 14px; margin-bottom: 2rem; }
       .btn-primary, .btn-outline { padding: 11px 24px; font-size: 13px; }
+    }
+
+    @media (max-width: 380px) {
+      section { padding: 2.5rem 0.75rem; }
+      .card-body { padding: 0.85rem 0.7rem 1rem; }
+      .step-item { font-size: 13px; line-height: 1.55; }
+      .step-badge { width: 18px; height: 18px; font-size: 9px; }
+      .sample-text { font-size: 12px; padding: 8px; max-height: 55vh; }
+      .copy-btn { font-size: 10px; padding: 3px 8px; }
+      .card-meta { flex-wrap: wrap; gap: 6px; }
     }
 
     .skip-link {
@@ -1477,7 +1547,7 @@
           <div class="step-item"><div class="step-badge">4</div><div>Download the CSV output → open Google Calendar → import the file. Share the FAQ with students in <span class="jargon" data-tip="Canvas is the Learning Management System (LMS) used at SAC — the website where you post assignments, grades, and announcements for your courses.">Canvas</span>.</div></div>
           <div class="sample-block">
             <div class="sample-header"><span class="sample-label">Sample Syllabus (10 pages)</span><button type="button" class="copy-btn" onclick="downloadSyllabus()" style="background:rgba(0,200,150,0.08);border-color:rgba(0,200,150,0.25);color:#00c896;">↓ Download .txt</button><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
-            <div class="sample-text">════════════════════════════════════════════════════════════
+            <div class="sample-text" id="syllabus-sample">════════════════════════════════════════════════════════════
 SANTA ANA COLLEGE
 ENGLISH 101: FRESHMAN COMPOSITION
 Spring 2026 — CRN 30142
@@ -2201,6 +2271,10 @@ COMBINE THEM:
       setTimeout(dismiss, 12000);
     })();
 
+    document.querySelectorAll('[data-tip]').forEach(function(el) {
+      if (!el.hasAttribute('title')) el.setAttribute('title', el.getAttribute('data-tip'));
+    });
+
     // --- Tag popovers ---
     var activePopover = null;
     document.addEventListener('click', function(e) {
@@ -2274,6 +2348,10 @@ COMBINE THEM:
       panel.classList.toggle('open');
       var isOpen = panel.classList.contains('open');
       if (btn) btn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) {
+        var first = panel.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (first) setTimeout(function() { first.focus(); }, 50);
+      }
     };
 
     // --- Text scaling (zoom + transform fallback for Firefox) ---
@@ -2323,7 +2401,9 @@ COMBINE THEM:
       } else {
         var mainEl = document.getElementById('main');
         if (!mainEl) return;
-        var text = mainEl.innerText;
+        var clone = mainEl.cloneNode(true);
+        clone.querySelectorAll('.sample-text, .sample-header, .formula-code, script, style').forEach(function(n) { n.remove(); });
+        var text = clone.innerText.replace(/\s+/g, ' ').trim();
         var chunks = [];
         var maxLen = 4000;
         for (var i = 0; i < text.length; i += maxLen) {
@@ -2411,7 +2491,7 @@ COMBINE THEM:
 
     document.addEventListener('click', function(e) {
       var navMenu = document.getElementById('navLinks');
-      if (navMenu.classList.contains('open') && !e.target.closest('nav')) closeNav();
+      if (navMenu && navMenu.classList.contains('open') && !e.target.closest('nav')) closeNav();
     });
 
     document.addEventListener('keydown', function(e) {
@@ -2449,7 +2529,7 @@ COMBINE THEM:
     }
 
     window.downloadSyllabus = function() {
-      var el = document.querySelector('#projects .sample-text');
+      var el = document.getElementById('syllabus-sample');
       if (!el) return;
       var blob = new Blob([el.textContent], { type: 'text/plain' });
       var a = document.createElement('a');
@@ -2462,7 +2542,12 @@ COMBINE THEM:
     };
 
     window.copyData = function(btn) {
-      var text = btn.closest('.sample-block').querySelector('.sample-text').textContent;
+      var header = btn.closest('.sample-header');
+      var textEl = header && header.nextElementSibling;
+      while (textEl && !textEl.classList.contains('sample-text')) textEl = textEl.nextElementSibling;
+      if (!textEl) textEl = btn.closest('.sample-block').querySelector('.sample-text');
+      if (!textEl) return;
+      var text = textEl.textContent;
       navigator.clipboard.writeText(text).then(function() {
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
@@ -2486,11 +2571,37 @@ COMBINE THEM:
       var steps = btn.nextElementSibling;
       var arrow = btn.querySelector('.arrow');
       var label = btn.querySelector('span:first-child');
+      var card = btn.closest('.project-card');
       var isOpen = steps.classList.toggle('open');
       btn.setAttribute('aria-expanded', isOpen);
       arrow.textContent = isOpen ? '\u2191' : '\u2193';
       label.textContent = isOpen ? 'Hide steps' : 'View build steps';
+      if (card) {
+        if (isOpen && window.matchMedia('(min-width: 900px)').matches) {
+          card.classList.add('expanded');
+        } else {
+          card.classList.remove('expanded');
+        }
+      }
     };
+
+    (function() {
+      var rtimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(rtimer);
+        rtimer = setTimeout(function() {
+          var wide = window.matchMedia('(min-width: 900px)').matches;
+          document.querySelectorAll('.project-card').forEach(function(card) {
+            var stepsOpen = card.querySelector('.card-steps.open');
+            if (stepsOpen && wide) {
+              card.classList.add('expanded');
+            } else {
+              card.classList.remove('expanded');
+            }
+          });
+        }, 120);
+      });
+    })();
 
     window.toggleCheck = function(row, ev) {
       if (ev && ev.target.closest('[data-tip]')) return;
