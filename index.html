@@ -6,6 +6,13 @@
   <title>Vibe Coding the Future of SAC</title>
   <meta name="description" content="A 2-hour hands-on Google AI Studio workshop for Santa Ana College faculty and administration." />
   <meta name="theme-color" content="#0b0e17" />
+  <meta property="og:title" content="Vibe Coding the Future of SAC" />
+  <meta property="og:description" content="A 2-hour hands-on Google AI Studio workshop for Santa Ana College faculty &amp; administration. Build real tools — no coding required." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Vibe Coding the Future of SAC" />
+  <meta name="twitter:description" content="Hands-on AI Studio workshop for SAC faculty &amp; admin." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
@@ -44,7 +51,7 @@
       height: 3px;
       width: 0%;
       background: linear-gradient(90deg, var(--red), var(--gold), var(--accent));
-      z-index: 200;
+      z-index: 300;
       transition: width 0.15s linear;
       will-change: width;
     }
@@ -371,8 +378,59 @@
       border-radius: 5px;
       background: rgba(255,255,255,0.06);
       color: var(--muted);
-      border: 1px solid var(--border);
+      cursor: default;
     }
+    .tag[data-tip] { cursor: pointer; }
+    .tag[data-tip]:hover { border-color: var(--accent); color: var(--text); }
+
+    .jargon {
+      cursor: help;
+      border-bottom: 1.5px dotted var(--accent);
+      color: inherit;
+      font-weight: inherit;
+    }
+    .jargon:hover { color: var(--accent); }
+
+    a.tag {
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--accent);
+      border: 1px solid rgba(0,200,150,0.2);
+      background: rgba(0,200,150,0.06);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    a.tag:hover { background: rgba(0,200,150,0.13); border-color: rgba(0,200,150,0.35); }
+
+    .tag-popover {
+      position: fixed;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: var(--body);
+      font-size: 13.5px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text);
+      width: 280px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+      z-index: 350;
+      pointer-events: auto;
+      animation: popIn 0.15s ease-out;
+    }
+    html.light .tag-popover { box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+    .tag-popover::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: var(--arrow-x, 50%);
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--border);
+    }
+    .tag-popover.flip::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--border); }
+    @keyframes popIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
     .projects-grid {
       display: grid;
@@ -421,6 +479,7 @@
 
     .aud-faculty { background: rgba(0,200,150,0.12); color: #00c896; }
     .aud-admin { background: rgba(124,106,255,0.12); color: #a598ff; }
+    .aud-everyone { background: rgba(255,152,0,0.12); color: #ffb74d; }
 
     .card-title {
       font-family: var(--heading);
@@ -446,7 +505,10 @@
       padding: 4px 10px;
       border-radius: 6px;
       margin-bottom: 1rem;
+      cursor: pointer;
+      transition: filter 0.2s;
     }
+    .card-capability:hover { filter: brightness(1.25); }
 
     .card-toggle {
       background: none;
@@ -473,14 +535,14 @@
       overflow: hidden;
       max-height: 0;
       opacity: 0;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+      transition: opacity 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
       margin-top: 0;
       padding-top: 0;
       border-top: 1px solid transparent;
     }
 
     .card-steps.open {
-      max-height: 1000px;
+      max-height: none;
       opacity: 1;
       margin-top: 1rem;
       padding-top: 1rem;
@@ -816,6 +878,32 @@
 
     footer strong { color: var(--red); }
 
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,200,150,0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: opacity 0.25s, visibility 0.25s, transform 0.25s, background 0.2s;
+      z-index: 120;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { filter: brightness(1.15); }
+    .back-to-top svg { display: block; }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to { opacity: 1; transform: translateY(0); }
@@ -919,6 +1007,8 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
+      .project-card:hover { transform: none !important; }
+      .back-to-top { transition: none !important; }
       html { scroll-behavior: auto; }
       .reveal { opacity: 1; transform: none; transition: none; }
     }
@@ -957,6 +1047,7 @@
     html.light .sample-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
     html.light .aud-faculty { background: rgba(0,150,110,0.1); }
     html.light .aud-admin { background: rgba(100,80,220,0.1); }
+    html.light .aud-everyone { background: rgba(200,120,0,0.1); }
     html.light .agenda-dot { background: var(--bg); }
 
     /* --- High-contrast theme --- */
@@ -977,6 +1068,8 @@
     html.high-contrast .check-row.done .check-box::after { border-color: #000; }
     html.high-contrast .hero-badge { border-width: 2px; }
     html.high-contrast .tag { border-width: 1.5px; }
+    html.high-contrast .tag-popover { border-width: 2px; font-weight: 500; }
+    html.high-contrast .jargon { border-bottom-width: 2px; }
 
     /* --- Accessibility panel --- */
     .a11y-wrap { position: relative; }
@@ -1103,47 +1196,47 @@
 <body>
 
 <a href="#main" class="skip-link">Skip to main content</a>
-<div class="progress-bar" id="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar" id="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Page scroll progress"></div>
 
 <nav aria-label="Main navigation">
   <div class="nav-brand">
     <span class="dot"></span>
     Vibe Coding SAC
   </div>
-  <button class="theme-toggle" onclick="cycleTheme()" aria-label="Switch contrast mode" title="Switch contrast">
+  <button type="button" class="theme-toggle" onclick="cycleTheme()" aria-label="Switch contrast mode" title="Switch contrast">
     <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
   </button>
   <div class="a11y-wrap">
-    <button class="a11y-btn" onclick="toggleA11yPanel()" aria-label="Accessibility options" title="Accessibility">
+    <button type="button" class="a11y-btn" id="a11yToggle" onclick="toggleA11yPanel()" aria-label="Accessibility options" aria-expanded="false" title="Accessibility">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="4.5" r="2.5"/><path d="M12 7v6m0 0l-3 7m3-7l3 7"/><path d="M5 10c2.3-.8 4.6-1.2 7-1.2s4.7.4 7 1.2"/>
       </svg>
     </button>
-    <div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="Accessibility settings">
+    <div class="a11y-panel" id="a11yPanel" role="region" aria-label="Accessibility settings">
       <div class="a11y-section">
         <span class="a11y-label">Text Size</span>
         <div class="a11y-btns">
-          <button class="size-btn active" data-size="100" onclick="setScale(100)">A</button>
-          <button class="size-btn" data-size="120" onclick="setScale(120)">A+</button>
-          <button class="size-btn" data-size="140" onclick="setScale(140)">A++</button>
+          <button type="button" class="size-btn active" data-size="100" onclick="setScale(100)">A</button>
+          <button type="button" class="size-btn" data-size="120" onclick="setScale(120)">A+</button>
+          <button type="button" class="size-btn" data-size="140" onclick="setScale(140)">A++</button>
         </div>
       </div>
       <div class="a11y-section">
         <span class="a11y-label">Read Aloud</span>
-        <button class="reader-btn" id="readerBtn" onclick="toggleReader()">&#9654; Read Page</button>
+        <button type="button" class="reader-btn" id="readerBtn" onclick="toggleReader()">&#9654; Read Page</button>
       </div>
     </div>
   </div>
-  <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">
+  <button type="button" class="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">
     <svg id="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <line x1="3" y1="6" x2="21" y2="6"/>
       <line x1="3" y1="12" x2="21" y2="12"/>
       <line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <ul class="nav-links" id="navLinks" role="list">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#resources" onclick="closeNav()">Resources</a></li>
     <li><a href="#agenda" onclick="closeNav()">Agenda</a></li>
     <li><a href="#projects" onclick="closeNav()">Projects</a></li>
@@ -1160,11 +1253,11 @@
     Santa Ana College — Spring 2026
   </div>
   <h1>Vibe Coding the<br /><span class="text-red">Future</span> of <span>SAC</span></h1>
-  <p class="hero-sub">A 2-hour hands-on workshop using Google AI Studio to build real tools — no syntax required. All sample data included for self-paced completion.</p>
+  <p class="hero-sub">A 2-hour hands-on workshop using <span class="jargon" data-tip="A free, browser-based tool from Google where you chat with AI models, upload files, and export working code — no installation needed.">Google AI Studio</span> to build real tools — no syntax required. All sample data included for self-paced completion.</p>
   <div class="hero-chips">
     <div class="chip"><span class="pip" style="background:var(--accent)"></span> 120 minutes</div>
-    <div class="chip"><span class="pip" style="background:var(--gold)"></span> Google AI Studio</div>
-    <div class="chip"><span class="pip" style="background:#7c6aff"></span> Gemini 1.5 Pro</div>
+    <div class="chip"><span class="pip" style="background:var(--gold)"></span> <span class="jargon" data-tip="A free, browser-based tool from Google where you chat with AI, upload files, and generate code — no installation or coding experience needed.">Google AI Studio</span></div>
+    <div class="chip"><span class="pip" style="background:#7c6aff"></span> <span class="jargon" data-tip="Google's most powerful AI model. 'Pro' handles complex tasks like reading PDFs, analyzing video, and long conversations. There's also a lighter 'Flash' version for quick tasks.">Gemini 1.5 Pro</span></div>
     <div class="chip"><span class="pip" style="background:var(--red)"></span> Faculty & Admin</div>
   </div>
   <div class="hero-cta">
@@ -1235,7 +1328,7 @@
   <div class="reveal">
     <p class="section-eyebrow">Sprint Schedule</p>
     <h2 class="section-title">Today's 120-Minute Agenda</h2>
-    <p class="section-lead">Four focused phases — from mindset shift to deployed tool.</p>
+    <p class="section-lead">Four focused phases — from mindset shift to <span class="jargon" data-tip="Making your AI tool available for real use — like embedding it in a Google Sheet so your department can use it, not just you in AI Studio.">deployed</span> tool.</p>
   </div>
   <div class="agenda-track">
     <div class="agenda-item reveal">
@@ -1244,11 +1337,11 @@
       <div class="agenda-body">
         <div class="agenda-phase" style="color:var(--red);">Phase 1</div>
         <h3>The Vibe Shift</h3>
-        <p>Move from "search" to "steer." Understand that natural language is the new code. Introduction to Google AI Studio — the interface, the model selector, and why System Instructions change everything.</p>
+        <p>Move from "search" to "steer." Understand that <span class="jargon" data-tip="Telling the AI what to do in plain English (or any language) instead of writing programming code. You type instructions like you'd talk to a colleague.">natural language</span> is the new code. Introduction to Google AI Studio — the interface, the <span class="jargon" data-tip="A dropdown menu in AI Studio that lets you pick which AI brain to use. 'Pro' is more powerful (good for complex tasks), 'Flash' is faster (good for quick questions).">model selector</span>, and why <span class="jargon" data-tip="A paragraph you write before your first prompt that tells the AI who it is, who it's talking to, and how to behave — like giving it a job description.">System Instructions</span> change everything.</p>
         <div class="agenda-tags">
-          <span class="tag">Mindset</span>
-          <span class="tag">AI Studio Tour</span>
-          <span class="tag">System Instructions intro</span>
+          <span class="tag" data-tip="Shift from treating AI like a search engine to steering it like a collaborator. You give direction — it builds.">Mindset</span>
+          <a class="tag" href="#resources" data-tip="Google AI Studio is a free, browser-based tool where you chat with Gemini models, upload files, and export code — no install needed.">Open AI Studio</a>
+          <a class="tag" href="#system-instructions" data-tip="A paragraph you write before your first prompt that tells the AI who it is, who it's talking to, and how to behave. Think of it as the AI's job description.">System Instructions</a>
         </div>
       </div>
     </div>
@@ -1258,12 +1351,12 @@
       <div class="agenda-body">
         <div class="agenda-phase" style="color:var(--gold);">Phase 2</div>
         <h3>AI Studio Sandbox</h3>
-        <p>Hands-on exploration. Set up System Instructions. Adjust Temperature from 0.0 to 1.0 and feel the difference. Upload a PDF, an image, or a video clip and watch Gemini work across modalities.</p>
+        <p>Hands-on exploration. Set up <span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is, who it's talking to, and how to behave — like giving it a job description.">System Instructions</span>. Adjust <span class="jargon" data-tip="A dial (0.0 to 1.0) that controls how predictable vs. creative the AI's answers are. Low = same answer every time. High = surprising and varied.">Temperature</span> from 0.0 to 1.0 and feel the difference. Upload a PDF, an image, or a video clip and watch Gemini work across <span class="jargon" data-tip="The ability to process multiple types of content — text, images, audio, and video — in the same conversation. You upload a file and the AI can 'see' or 'hear' it.">modalities</span>.</p>
         <div class="agenda-tags">
-          <span class="tag">System Instructions</span>
-          <span class="tag">Temperature</span>
-          <span class="tag">PDF / Video upload</span>
-          <span class="tag">Multimodality</span>
+          <a class="tag" href="#system-instructions" data-tip="A paragraph you write before your first prompt that tells the AI who it is, who it's talking to, and how to behave.">System Instructions</a>
+          <a class="tag" href="#tips" data-tip="A dial (0.0 to 1.0) that controls how predictable vs. creative the AI's answers are. Low = consistent facts. High = surprising ideas.">Temperature</a>
+          <span class="tag" data-tip="Click the paperclip icon in AI Studio to upload PDFs, images, or video clips. Gemini can read, summarize, and analyze them directly.">PDF / Video upload</span>
+          <span class="tag" data-tip="Gemini can process text, images, audio, and video in the same conversation — this ability to work across formats is called multimodality.">Multimodality</span>
         </div>
       </div>
     </div>
@@ -1273,11 +1366,11 @@
       <div class="agenda-body">
         <div class="agenda-phase" style="color:var(--accent);">Phase 3 — The Big One</div>
         <h3>Prototyping Lab</h3>
-        <p>Choose one of 6 projects below and build a functional mini-tool from scratch. You have 60 minutes. Iterate at least 3 times. Share your result with the person next to you before time is called.</p>
+        <p>Choose one of 7 projects below and build a functional mini-tool from scratch. You have 60 minutes. <span class="jargon" data-tip="Send your prompt, look at the AI's response, then refine your instructions and try again. Each round of feedback makes the output better — like editing a rough draft.">Iterate</span> at least 3 times. Share your result with the person next to you before time is called.</p>
         <div class="agenda-tags">
-          <span class="tag">60 min build sprint</span>
-          <span class="tag">Choose 1 of 6 projects</span>
-          <span class="tag">Pair & share</span>
+          <span class="tag" data-tip="A focused, timed session where you pick one project and build a working prototype from scratch. Aim for at least 3 prompt iterations before time is up.">60 min build sprint</span>
+          <a class="tag" href="#projects" data-tip="Seven ready-made project briefs covering syllabi, rubrics, lectures, meetings, tutoring, transfer advising, and a fun coding demo. Pick the one most relevant to your role.">Choose 1 of 7 projects</a>
+          <a class="tag" href="#checklist" data-tip="A quick 8-step ritual to run before every AI Studio session — model selection, system instructions, temperature, uploads, iteration, and more.">Pre-build checklist</a>
         </div>
       </div>
     </div>
@@ -1287,12 +1380,12 @@
       <div class="agenda-body">
         <div class="agenda-phase" style="color:#7c6aff;">Phase 4</div>
         <h3>Export & Deploy</h3>
-        <p>Click "Get Code" in AI Studio — even if you don't write code, Gemini will explain how to paste it into Google Apps Script to make your tool live in Sheets or Docs. Save your prompt as a reusable Prompt File.</p>
+        <p>Click <span class="jargon" data-tip="A button in AI Studio that generates ready-to-paste programming code. You don't need to understand the code — just copy it and paste where instructed.">"Get Code"</span> in AI Studio — even if you don't write code, Gemini will explain how to paste it into <span class="jargon" data-tip="Google's free scripting platform built into Sheets, Docs, and Forms. You paste code here to turn your AI prompt into a live, shareable tool — like a macro on steroids.">Google Apps Script</span> to make your tool live in Sheets or Docs. Save your prompt as a reusable <span class="jargon" data-tip="A saved prompt inside AI Studio that you can reopen, edit, and share with colleagues. Think of it like a document template — create once, reuse anytime.">Prompt File</span>.</p>
         <div class="agenda-tags">
-          <span class="tag">Get Code button</span>
-          <span class="tag">Google Apps Script</span>
-          <span class="tag">Prompt Files</span>
-          <span class="tag">Share with department</span>
+          <span class="tag" data-tip="A button in AI Studio that generates ready-to-paste code (Python, JavaScript, etc.) so you can embed your AI prompt into a real app or Google Sheet.">Get Code button</span>
+          <a class="tag" href="#resources" data-tip="Google's free scripting platform built into Sheets, Docs, and Forms. Paste the generated code here to turn your prompt into a live, shareable tool.">Google Apps Script</a>
+          <span class="tag" data-tip="A saved prompt inside AI Studio that you can reopen, edit, and share. Think of it like a template — create once, reuse anytime.">Prompt Files</span>
+          <span class="tag" data-tip="Export your finished prompt or tool and share the link with colleagues. They can duplicate it and adapt it for their own courses.">Share with department</span>
         </div>
       </div>
     </div>
@@ -1303,7 +1396,7 @@
   <div class="reveal">
     <p class="section-eyebrow">Prototyping Lab</p>
     <h2 class="section-title">Choose Your Project</h2>
-    <p class="section-lead">Pick one. You have 60 minutes. Iterate at least 3 times before declaring victory.</p>
+    <p class="section-lead">Pick one. You have 60 minutes. <span class="jargon" data-tip="Send your prompt, review the AI's response, refine your instructions, and try again. Each round gets better — like editing a rough draft.">Iterate</span> at least 3 times before declaring victory.</p>
   </div>
   <div class="projects-grid">
     <div class="project-card reveal">
@@ -1311,53 +1404,333 @@
       <div class="card-body">
         <div class="card-meta"><span class="card-num">Project 01</span><span class="card-audience aud-faculty">Faculty</span></div>
         <div class="card-title">Syllabus Sensei</div>
-        <div class="card-vibe">Drop a PDF syllabus, get a student-facing FAQ and a Google Calendar-ready CSV of all deadlines.</div>
-        <div class="card-capability" style="background:rgba(200,16,46,0.1);color:#ff8a8a;">Multimodal PDF Analysis</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-vibe">Drop a PDF syllabus, get a student-facing FAQ and a Google Calendar-ready <span class="jargon" data-tip="A CSV (Comma-Separated Values) file is a simple spreadsheet format. Google Calendar can import CSV files to automatically create events — no manual entry needed.">CSV</span> of all deadlines.</div>
+        <div class="card-capability" style="background:rgba(200,16,46,0.1);color:#ff8a8a;" data-tip="Upload a PDF and ask Gemini to read it — extract tables, summarize sections, rewrite content, or answer questions about it. 'Multimodal' means the AI handles files, not just typed text.">Multimodal PDF Analysis</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
-          <div class="step-item"><div class="step-badge">1</div><div>Open AI Studio → New Prompt → Upload your syllabus PDF via the paperclip icon.</div></div>
-          <div class="step-item"><div class="step-badge">2</div><div>In System Instructions: <em>"You are an academic advisor at SAC. Be supportive and student-friendly."</em></div></div>
-          <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Create a 10-question student FAQ and a Google Calendar-ready CSV of all deadlines from this syllabus."</em></div></div>
-          <div class="step-item"><div class="step-badge">4</div><div>Download the CSV output → open Google Calendar → import the file. Share the FAQ with students in Canvas.</div></div>
+          <div class="step-item"><div class="step-badge">1</div><div>Open AI Studio → New Prompt. <strong>Option A:</strong> Upload your own syllabus PDF via the paperclip icon. <strong>Option B:</strong> No syllabus handy? Download the sample below, or copy-paste the text directly into the chat.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>In <span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is and how to behave — before you ask it anything. Like giving it a job description.">System Instructions</span>: <em>"You are an academic advisor at SAC. Be supportive and student-friendly."</em></div></div>
+          <div class="step-item"><div class="step-badge">3</div><div><span class="jargon" data-tip="The message you type to the AI. A prompt is just your question or instruction — the better you describe what you want, the better the AI's response.">Prompt</span>: <em>"Create a 10-question student FAQ and a Google Calendar-ready <span class="jargon" data-tip="A CSV (Comma-Separated Values) file is a simple spreadsheet format that Google Calendar can import to auto-create events.">CSV</span> of all deadlines from this syllabus."</em></div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Download the CSV output → open Google Calendar → import the file. Share the FAQ with students in <span class="jargon" data-tip="Canvas is the Learning Management System (LMS) used at SAC — the website where you post assignments, grades, and announcements for your courses.">Canvas</span>.</div></div>
           <div class="sample-block">
-            <div class="sample-header"><span class="sample-label">Sample Syllabus</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
-            <div class="sample-text">ENGLISH 101: FRESHMAN COMPOSITION
-Santa Ana College — Spring 2026
-Instructor: Dr. Maria Santos | msantos@sac.edu | Office: L-214
-Office Hours: Tu/Th 1:00–2:30 PM
+            <div class="sample-header"><span class="sample-label">Sample Syllabus (10 pages)</span><button type="button" class="copy-btn" onclick="downloadSyllabus()" style="background:rgba(0,200,150,0.08);border-color:rgba(0,200,150,0.25);color:#00c896;">↓ Download .txt</button><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">════════════════════════════════════════════════════════════
+SANTA ANA COLLEGE
+ENGLISH 101: FRESHMAN COMPOSITION
+Spring 2026 — CRN 30142
+════════════════════════════════════════════════════════════
 
-COURSE DESCRIPTION
-Develops college-level reading and writing skills. Students compose a minimum of 6,000 words in essays emphasizing analysis, argument, and research. Prerequisite: Guided self-placement or ENGL 060 with C or better.
+INSTRUCTOR INFORMATION
+─────────────────────
+Instructor:       Dr. Maria Santos
+Email:            msantos@sac.edu
+Office:           L-214 (Language Arts Building)
+Office Hours:     Tuesday &amp; Thursday, 1:00–2:30 PM
+                  Friday by appointment (book via Canvas)
+Phone:            (714) 564-6000 ext. 14235
+Response Policy:  Emails answered within 24 hours on weekdays.
+                  Weekend emails answered by Monday noon.
 
-REQUIRED MATERIALS
-- They Say / I Say (5th ed.) — Graff &amp; Birkenstein
-- SAC Library databases via Canvas
-- Google Docs for all submissions
+CLASS MEETINGS
+─────────────
+Section 01:  Tu/Th 9:30–10:50 AM — Room S-206
+Section 02:  Tu/Th 11:00 AM–12:20 PM — Room S-206
+Final Exam:  Thursday, May 21, 9:30–11:30 AM
 
-GRADING
-Participation &amp; Discussion Posts: 10%
-Essay 1 — Literacy Narrative (750 words): 10% — Due Feb 14
-Essay 2 — Rhetorical Analysis (1,000 words): 15% — Due Mar 7
-Essay 3 — Argument Essay (1,200 words): 20% — Due Apr 4
-Research Paper (2,000 words): 25% — Due May 2
-Portfolio &amp; Reflection: 10% — Due May 16
-Peer Review Sessions (4 total): 10%
+════════════════════════════════════════════════════════════
+1. COURSE DESCRIPTION
+════════════════════════════════════════════════════════════
 
-KEY DATES
-Feb 3 — Last day to add/drop without W
-Feb 14 — Essay 1 due 11:59 PM
-Feb 21 — Peer Review #1 (in-class)
-Mar 7 — Essay 2 due 11:59 PM
-Mar 14 — Peer Review #2
-Mar 31–Apr 4 — Spring Break
-Apr 4 — Essay 3 due 11:59 PM
-Apr 25 — Peer Review #4
-May 2 — Research Paper due
-May 16 — Portfolio due
-May 22 — Final grades posted
+Develops college-level reading and writing skills. Students
+compose a minimum of 6,000 words in essays emphasizing
+analysis, argument, and research. The course focuses on
+critical thinking, rhetorical strategies, and the writing
+process from prewriting through revision.
 
-LATE WORK: 10% deduction within 48 hrs. Not accepted after without prior arrangement.
-AI POLICY: AI tools OK for brainstorming/outlining. All submitted writing must be your own.</div>
+Prerequisite: Guided self-placement or completion of
+ENGL 060 with a grade of C or better.
+
+This course satisfies the IGETC Area 1A (English
+Communication) requirement and CSU GE Area A2.
+
+Student Learning Outcomes (SLOs):
+  1. Compose thesis-driven essays using evidence-based
+     reasoning and rhetorical strategies.
+  2. Integrate sources ethically using MLA citation.
+  3. Revise drafts based on peer and instructor feedback.
+  4. Evaluate texts critically for argument, audience,
+     and purpose.
+
+════════════════════════════════════════════════════════════
+2. REQUIRED MATERIALS
+════════════════════════════════════════════════════════════
+
+Textbook:
+  They Say / I Say: The Moves That Matter in Academic
+  Writing (5th Edition) — Gerald Graff &amp; Cathy Birkenstein
+  ISBN: 978-0393538700
+  Available at the SAC Bookstore and on reserve at
+  Nealley Library.
+
+Technology:
+  • Canvas LMS — all assignments submitted here
+  • Google Docs — required for drafts and peer review
+  • SAC Library databases (accessed via Canvas)
+  • Turnitin — integrated in Canvas for originality checks
+
+Recommended:
+  • The Little Seagull Handbook (4th ed.) — Bullock
+  • Grammarly (free version) for proofreading
+
+Note: You do NOT need to buy any software. All required
+tech is free through your SAC student account.
+
+════════════════════════════════════════════════════════════
+3. GRADING BREAKDOWN
+════════════════════════════════════════════════════════════
+
+  Component                              Weight    Due Date
+  ──────────────────────────────────────────────────────────
+  Participation &amp; Discussion Posts       10%      Weekly
+  Essay 1 — Literacy Narrative (750w)    10%      Feb 14
+  Essay 2 — Rhetorical Analysis (1,000w) 15%      Mar 7
+  Essay 3 — Argument Essay (1,200w)      20%      Apr 4
+  Research Paper (2,000w)                25%      May 2
+  Portfolio &amp; Reflection                 10%      May 16
+  Peer Review Sessions (4 total)         10%      Various
+  ──────────────────────────────────────────────────────────
+
+Grading Scale:
+  A  = 90–100%    B  = 80–89%    C  = 70–79%
+  D  = 60–69%     F  = Below 60%
+
+  A grade of C or higher is required to satisfy the
+  ENGL 101 graduation requirement.
+
+════════════════════════════════════════════════════════════
+4. ASSIGNMENT DESCRIPTIONS
+════════════════════════════════════════════════════════════
+
+ESSAY 1 — LITERACY NARRATIVE (750 words)
+  Reflect on a significant reading or writing experience
+  that shaped who you are. Use vivid sensory detail and
+  a clear narrative arc. This essay practices personal
+  voice and storytelling structure.
+
+ESSAY 2 — RHETORICAL ANALYSIS (1,000 words)
+  Analyze a published argument (provided in class) using
+  ethos, pathos, and logos. Identify the author's purpose,
+  audience, and rhetorical strategies. Cite the text
+  using MLA format.
+
+ESSAY 3 — ARGUMENT ESSAY (1,200 words)
+  Take a position on a debatable topic related to
+  education, technology, or equity. Support your claim
+  with at least 3 credible sources. Address a
+  counterargument. MLA format required.
+
+RESEARCH PAPER (2,000 words)
+  A sustained, thesis-driven research essay on a topic
+  of your choice (approved by instructor). Minimum 5
+  scholarly sources. Must include an annotated
+  bibliography submitted separately on Apr 18.
+
+PORTFOLIO &amp; REFLECTION (due May 16)
+  Compile revised versions of all four essays plus a
+  1,000-word reflective letter analyzing your growth
+  as a writer. Submit as a single PDF on Canvas.
+
+DISCUSSION POSTS (weekly)
+  Respond to the assigned reading prompt (150+ words)
+  by Thursday 11:59 PM. Reply to at least one classmate
+  (75+ words) by Sunday 11:59 PM.
+
+PEER REVIEW (4 sessions — in class)
+  Bring a complete draft. Use the provided rubric to
+  give written feedback to two classmates. Peer review
+  is graded on the quality of feedback you give, not
+  the quality of your draft.
+
+════════════════════════════════════════════════════════════
+5. COURSE SCHEDULE (Week-by-Week)
+════════════════════════════════════════════════════════════
+
+WK  DATES         TOPIC                        DUE
+──  ────────────  ───────────────────────────  ──────────
+ 1  Jan 27–31     Introductions; What is        —
+                  rhetoric?
+ 2  Feb 3–7       Literacy &amp; identity;          Discussion 1
+                  narrative craft               Add/Drop
+                                                deadline: Feb 3
+ 3  Feb 10–14     Workshop: Literacy            ESSAY 1
+                  Narrative                     due Feb 14
+ 4  Feb 17–21     Rhetorical appeals;           Peer Review #1
+                  analyzing arguments           (Feb 21)
+ 5  Feb 24–28     Ethos, pathos, logos          Discussion 3
+                  in practice
+ 6  Mar 3–7       Workshop: Rhetorical          ESSAY 2
+                  Analysis                      due Mar 7
+ 7  Mar 10–14     Introduction to argument;     Peer Review #2
+                  claim + evidence              (Mar 14)
+ 8  Mar 17–21     Counterarguments;             Discussion 5
+                  they say / I say
+ 9  Mar 24–28     Library research workshop;    Topic proposal
+                  finding scholarly sources      due Mar 28
+10  Mar 31–Apr 4  *** SPRING BREAK ***          ESSAY 3
+                  (No class Mar 31–Apr 2)       due Apr 4
+11  Apr 7–11      Research methods;             Discussion 7
+                  avoiding plagiarism
+12  Apr 14–18     Integrating sources;          Annotated Bib
+                  MLA citation deep-dive        due Apr 18
+13  Apr 21–25     Workshop: Research Paper;     Peer Review #3
+                  thesis refinement             (Apr 22)
+                                                Peer Review #4
+                                                (Apr 25)
+14  Apr 28–May 2  Final revisions               RESEARCH PAPER
+                                                due May 2
+15  May 5–9       Portfolio preparation;         Discussion 9
+                  reflective writing
+16  May 12–16     Course wrap-up; evaluations   PORTFOLIO
+                                                due May 16
+17  May 19–22     FINAL EXAM PERIOD             Final Exam
+                  Thu May 21, 9:30–11:30 AM     May 22: Grades
+                                                posted
+
+════════════════════════════════════════════════════════════
+6. COURSE POLICIES
+════════════════════════════════════════════════════════════
+
+ATTENDANCE
+  • More than 3 absences may result in a grade drop.
+  • Arrive on time. Two tardies = one absence.
+  • If you miss class, you are responsible for all
+    material. Check Canvas and ask a classmate first.
+
+LATE WORK
+  • Essays accepted up to 48 hours late with a 10%
+    deduction per day.
+  • After 48 hours, late work is not accepted unless
+    you have prior written approval from the instructor.
+  • Discussion posts cannot be submitted late.
+
+ACADEMIC INTEGRITY
+  • All submitted work must be your own.
+  • Plagiarism — including paraphrasing without citation
+    — will result in a zero on the assignment and a
+    referral to the Dean of Students.
+  • Second offense: F in the course.
+  • When in doubt, cite. When still in doubt, ask.
+
+AI POLICY
+  • AI tools (ChatGPT, Gemini, etc.) may be used for:
+    – Brainstorming and outlining
+    – Grammar checking
+    – Generating discussion questions for your own study
+  • AI tools may NOT be used to:
+    – Generate essay drafts or paragraphs submitted as
+      your own writing
+    – Paraphrase sources to avoid plagiarism detection
+  • If you use AI at any stage, disclose it in a footnote.
+  • Undisclosed AI-generated writing is treated as
+    plagiarism.
+
+COMMUNICATION
+  • Use Canvas messaging or email for all course
+    communication. Include "ENGL 101" in the subject.
+  • Allow 24 hours for a response on weekdays.
+  • For urgent matters, visit office hours.
+
+════════════════════════════════════════════════════════════
+7. STUDENT SUPPORT SERVICES
+════════════════════════════════════════════════════════════
+
+SAC Writing Center — Room L-206
+  Free one-on-one tutoring. Walk-ins welcome.
+  Mon–Thu 9 AM–4 PM, Fri 9 AM–1 PM.
+  https://www.sac.edu/writingcenter
+
+Nealley Library
+  Research help, databases, and study spaces.
+  Librarian appointments via Canvas.
+  https://www.sac.edu/library
+
+Disabled Students Programs &amp; Services (DSPS)
+  If you have a documented disability, contact DSPS
+  to arrange accommodations.
+  Phone: (714) 564-6264 | Room S-214
+  https://www.sac.edu/dsps
+
+Counseling &amp; Student Health
+  Free mental health counseling, crisis support, and
+  basic health services.
+  Phone: (714) 564-6210 | Room S-215
+
+SAC Food Pantry (Hungry Dons)
+  Free groceries and hygiene items for SAC students.
+  No questions asked. Room L-109.
+
+EOPS / CARE / CalWORKs
+  Additional support for first-generation, foster youth,
+  and CalWORKs-eligible students.
+  Room S-201 | (714) 564-6228
+
+════════════════════════════════════════════════════════════
+8. ESSAY FORMAT REQUIREMENTS
+════════════════════════════════════════════════════════════
+
+  • MLA format (8th edition) for all essays
+  • 12-point Times New Roman or Calibri
+  • Double-spaced, 1-inch margins on all sides
+  • Header: Last name + page number (top right)
+  • First page: Name, instructor, course, date (left)
+  • Title centered, no bold or underline
+  • Works Cited page on a separate page
+  • Submit as .docx or .pdf via Canvas
+
+════════════════════════════════════════════════════════════
+9. IMPORTANT DATES — SPRING 2026
+════════════════════════════════════════════════════════════
+
+  Jan 27 ........ First day of classes
+  Feb 3 ......... Last day to add without instructor code
+  Feb 3 ......... Last day to drop without a W
+  Feb 14 ........ Essay 1 due (11:59 PM)
+  Feb 17 ........ Presidents' Day — NO CLASS
+  Feb 21 ........ Peer Review #1 (in class)
+  Mar 7 ......... Essay 2 due (11:59 PM)
+  Mar 14 ........ Peer Review #2 (in class)
+  Mar 28 ........ Research topic proposal due
+  Mar 31–Apr 4 .. Spring Break — NO CLASS
+  Apr 4 ......... Essay 3 due (11:59 PM)
+  Apr 14 ........ Last day to drop with a W
+  Apr 18 ........ Annotated bibliography due
+  Apr 22 ........ Peer Review #3 (in class)
+  Apr 25 ........ Peer Review #4 (in class)
+  May 2 ......... Research Paper due (11:59 PM)
+  May 16 ........ Portfolio &amp; Reflection due
+  May 21 ........ Final Exam — 9:30–11:30 AM
+  May 22 ........ Final grades posted
+
+════════════════════════════════════════════════════════════
+10. FINAL AGREEMENT
+════════════════════════════════════════════════════════════
+
+By remaining enrolled in this course after the first
+week, you acknowledge that you have read, understood,
+and agree to abide by the policies outlined in this
+syllabus. This syllabus is a plan, not a contract —
+the instructor reserves the right to modify the
+schedule as needed with reasonable notice.
+
+Questions? Email msantos@sac.edu or visit office hours.
+Let's have a great semester.
+
+— Dr. Santos
+
+════════════════════════════════════════════════════════════
+Santa Ana College | 1530 W. 17th Street, Santa Ana, CA
+https://www.sac.edu
+════════════════════════════════════════════════════════════</div>
           </div>
         </div>
       </div>
@@ -1367,16 +1740,16 @@ AI POLICY: AI tools OK for brainstorming/outlining. All submitted writing must b
       <div class="card-body">
         <div class="card-meta"><span class="card-num">Project 02</span><span class="card-audience aud-faculty">Faculty</span></div>
         <div class="card-title">Equity Auditor</div>
-        <div class="card-vibe">Audit assignments for hidden curriculum bias, ESL accessibility, and Guided Pathways alignment.</div>
-        <div class="card-capability" style="background:rgba(229,168,35,0.1);color:#ffd97d;">Instructional Design</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-vibe">Audit assignments for <span class="jargon" data-tip="Unspoken academic expectations (like knowing how to use a library database or write in a specific format) that some students — especially first-generation college students — may not have been taught.">hidden curriculum</span> bias, <span class="jargon" data-tip="English as a Second Language — students whose first language is not English and who may need clearer instructions, simpler vocabulary, or additional context.">ESL</span> accessibility, and <span class="jargon" data-tip="A statewide framework that helps community college students choose a clear academic path from day one, reducing unnecessary courses and time to graduation.">Guided Pathways</span> alignment.</div>
+        <div class="card-capability" style="background:rgba(229,168,35,0.1);color:#ffd97d;" data-tip="Using AI to evaluate and improve how assignments, rubrics, and course materials are structured — checking for clarity, equity, alignment with learning outcomes, and accessibility.">Instructional Design</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
           <div class="step-item"><div class="step-badge">1</div><div>Paste your assignment prompt text directly into AI Studio chat.</div></div>
           <div class="step-item"><div class="step-badge">2</div><div>Set temperature to 0.4 — balanced for both consistency and creative suggestions.</div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Review this for hidden curriculum bias. Suggest 3 ways to make it more accessible for ESL students and first-gen learners at SAC."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Ask it to fully rewrite the assignment using its own suggestions. Compare before and after.</div></div>
           <div class="sample-block">
-            <div class="sample-header"><span class="sample-label">Sample Assignment to Audit</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-header"><span class="sample-label">Sample Assignment to Audit</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">SOCIOLOGY 101 — MIDTERM RESEARCH PAPER
 Due: March 15, 2026 | Worth: 20% of final grade
 
@@ -1410,18 +1783,18 @@ NOTE FOR WORKSHOP: This assignment has intentional equity gaps — limited persp
       <div class="card-body">
         <div class="card-meta"><span class="card-num">Project 03</span><span class="card-audience aud-faculty">Faculty</span></div>
         <div class="card-title">Lecture → Micro-Lesson</div>
-        <div class="card-vibe">Upload a Zoom recording. Get timestamped notes and a Canvas-compatible quiz in minutes.</div>
-        <div class="card-capability" style="background:rgba(0,200,150,0.1);color:#00c896;">Video Intelligence</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-vibe">Upload a Zoom recording. Get <span class="jargon" data-tip="Notes that include the exact minute and second where each topic was discussed in the video, so students can jump directly to what they need.">timestamped notes</span> and a Canvas-compatible quiz in minutes.</div>
+        <div class="card-capability" style="background:rgba(0,200,150,0.1);color:#00c896;" data-tip="Upload a video to AI Studio and Gemini can transcribe it, summarize key points, generate quizzes from the content, or create study guides — all from the video itself.">Video Intelligence</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
           <div class="step-item"><div class="step-badge">1</div><div>Upload your .mp4 lecture file in AI Studio (Gemini 1.5 Pro supports up to 1 hour of video).</div></div>
           <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a curriculum specialist. Be concise and pedagogically sound."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Identify the 3 most critical concepts. Provide a time-stamped summary and a 5-question Canvas-compatible quiz."</em></div></div>
-          <div class="step-item"><div class="step-badge">4</div><div>Copy the quiz questions directly into Canvas New Quizzes. Save as a Prompt File for future lectures.</div></div>
+          <div class="step-item"><div class="step-badge">4</div><div>Copy the quiz questions directly into <span class="jargon" data-tip="Canvas is SAC's online course platform. 'New Quizzes' is its built-in quiz tool — you can paste questions directly into it.">Canvas New Quizzes</span>. Save as a <span class="jargon" data-tip="A saved prompt inside AI Studio that you can reopen, edit, and share. Like a reusable template for future lectures.">Prompt File</span> for future lectures.</div></div>
           <div class="sample-block">
             <div class="sample-header"><span class="sample-label">Sample Lecture Video</span><a href="sample-lecture.mp4" download class="copy-btn" style="text-decoration:none;">Download .mp4</a></div>
             <div class="transcript-note"><strong>Hearing-impaired?</strong> A full text transcript is provided below. You can paste it directly into AI Studio instead of uploading the video.</div>
-            <div class="sample-header"><span class="sample-label" id="p03-transcript">Full Transcript — Week 6 Overview</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-header"><span class="sample-label" id="p03-transcript">Full Transcript — Week 6 Overview</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">[00:00] Welcome back everyone. Today we're covering Chapter 6 — photosynthesis.
 
 [01:15] What is photosynthesis? Plants convert light energy into chemical energy. The equation: 6CO2 + 6H2O + light → C6H12O6 + 6O2.
@@ -1453,15 +1826,15 @@ TIP: If you don't have a video file, paste this transcript into AI Studio instea
         <div class="card-meta"><span class="card-num">Project 04</span><span class="card-audience aud-admin">Admin</span></div>
         <div class="card-title">Admin Workflow Automator</div>
         <div class="card-vibe">Paste messy meeting notes, get a clean action-item table with assigned owners and deadlines.</div>
-        <div class="card-capability" style="background:rgba(124,106,255,0.1);color:#a598ff;">System Prompting</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-capability" style="background:rgba(124,106,255,0.1);color:#a598ff;" data-tip="Writing a set of persistent instructions that run before every conversation turn. This is how you give the AI a specific role, tone, and set of rules it must always follow.">System Prompting</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
-          <div class="step-item"><div class="step-badge">1</div><div>Select Chat Prompt mode in AI Studio (not Generate Text — this matters).</div></div>
-          <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a Program Manager at SAC. Extract action items, deadlines, and stakeholders. Format as a markdown table."</em></div></div>
+          <div class="step-item"><div class="step-badge">1</div><div>Select <span class="jargon" data-tip="A conversation mode in AI Studio where you go back and forth with the AI, like texting. The other mode ('Generate Text') is for one-shot outputs — but Chat is better for refining results.">Chat Prompt mode</span> in AI Studio (not Generate Text — this matters).</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div><span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is and how to behave — like giving it a job description.">System Instructions</span>: <em>"You are a Program Manager at SAC. Extract action items, deadlines, and stakeholders. Format as a <span class="jargon" data-tip="A simple text formatting language that uses symbols like # for headings, * for bold, and | for tables. AI Studio outputs markdown, and Google Docs can read it.">markdown</span> table."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Paste your raw meeting notes or Zoom transcript into the chat and hit Run.</div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Copy the markdown table into a Google Doc. Save this as a Prompt File — use it after every meeting.</div></div>
           <div class="sample-block">
-            <div class="sample-header"><span class="sample-label">Sample Meeting Notes</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-header"><span class="sample-label">Sample Meeting Notes</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">SAC Student Success Committee — April 3, 2026 | Room A-101
 
 Present: VP Rodriguez, Dean Kim, Prof. Washington, Counselor Tran, IT Director Okafor, Dr. Patel (EOPS)
@@ -1486,16 +1859,16 @@ Adjourned 3:15 PM. Next meeting: April 17.</div>
       <div class="card-body">
         <div class="card-meta"><span class="card-num">Project 05</span><span class="card-audience aud-faculty">Faculty</span></div>
         <div class="card-title">Personalized Tutor</div>
-        <div class="card-vibe">Build a Socratic AI tutor for your subject — gives hints, never answers directly. Set the behavior via few-shot examples.</div>
-        <div class="card-capability" style="background:rgba(255,107,157,0.1);color:#ffa8c5;">Few-Shot Prompting</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-vibe">Build a <span class="jargon" data-tip="A teaching method named after the philosopher Socrates. Instead of giving answers, the tutor asks guiding questions that help the student figure it out themselves.">Socratic</span> AI tutor for your subject — gives hints, never answers directly. Set the behavior via <span class="jargon" data-tip="Instead of just describing what you want, you show the AI 2–3 worked examples of a question and the ideal response. The AI learns the pattern and follows it for new questions.">few-shot examples</span>.</div>
+        <div class="card-capability" style="background:rgba(255,107,157,0.1);color:#ffa8c5;" data-tip="Instead of just describing what you want, you show the AI 2–3 examples of the input and the exact output you expect. The AI learns the pattern and follows it for new inputs.">Few-Shot Prompting</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
           <div class="step-item"><div class="step-badge">1</div><div>System Instructions: <em>"You are a patient SAC tutor. Never give direct answers. Instead, ask a guiding question that helps the student arrive at the answer themselves."</em></div></div>
-          <div class="step-item"><div class="step-badge">2</div><div>Add 3 few-shot examples: write a student question, then write the Socratic hint response you want. Repeat 3 times.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>Add 3 <span class="jargon" data-tip="Worked examples you give the AI before it starts answering. Write a student question, then write the exact response you'd want the tutor to give. The AI copies that style for new questions.">few-shot examples</span>: write a student question, then write the <span class="jargon" data-tip="A response that guides the student toward the answer with a question or hint, rather than just telling them. Named after Socrates' teaching style.">Socratic</span> hint response you want. Repeat 3 times.</div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Test it — try to "break" it by demanding a direct answer. Refine your instructions until it holds.</div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Save as a Prompt File and share the link with students as a study companion.</div></div>
           <div class="sample-block">
-            <div class="sample-header"><span class="sample-label">Sample Few-Shot Examples (Math 080)</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-header"><span class="sample-label">Sample Few-Shot Examples (Math 080)</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">EXAMPLE 1:
 Student: "What's 3/4 + 1/2? I keep getting it wrong."
 Tutor: "Good question! Before adding fractions, they need the same denominator. What number could both 4 and 2 divide into evenly?"
@@ -1523,15 +1896,15 @@ TEST PROMPTS (try these after setup):
         <div class="card-meta"><span class="card-num">Project 06</span><span class="card-audience aud-admin">Admin</span></div>
         <div class="card-title">SAC Transfer Tracker</div>
         <div class="card-vibe">Live-search UC/CSU transfer requirements and auto-generate a comparison chart for your students.</div>
-        <div class="card-capability" style="background:rgba(78,205,196,0.1);color:#7dedea;">Google Search Tool</div>
-        <button class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-capability" style="background:rgba(78,205,196,0.1);color:#7dedea;" data-tip="A toggle in AI Studio that lets Gemini search the live web during a conversation. Enable it when the AI needs up-to-date info like current transfer requirements, deadlines, or policies.">Google Search Tool</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
         <div class="card-steps">
           <div class="step-item"><div class="step-badge">1</div><div>In AI Studio, toggle ON the "Google Search" tool in the Tools panel on the right sidebar.</div></div>
           <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a SAC transfer counselor. Always cite the source URL for every requirement you list."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Search for 2026 CSU transfer requirements for Business Administration and create a comparison chart for our students."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Paste the output into a Google Sheet and share with the counseling department.</div></div>
           <div class="sample-block">
-            <div class="sample-header"><span class="sample-label">Sample Counselor Query</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-header"><span class="sample-label">Sample Counselor Query</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">INITIAL PROMPT (with Google Search tool ON):
 Search for and compare the current transfer requirements for:
 1. CSU Fullerton — Business Administration (B.A.)
@@ -1555,6 +1928,73 @@ FOLLOW-UP PROMPTS:
         </div>
       </div>
     </div>
+    <div class="project-card reveal">
+      <div class="card-accent" style="background:linear-gradient(90deg,#ff9800,#ffe082);"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="card-num">Project 07</span><span class="card-audience aud-everyone">Everyone</span></div>
+        <div class="card-title">Confetti Blaster</div>
+        <div class="card-vibe">Ask Gemini to generate a full interactive confetti cannon game — then customize what it shoots out. A fun demo of AI-generated code.</div>
+        <div class="card-capability" style="background:rgba(255,152,0,0.1);color:#ffb74d;" data-tip="Use 'Get Code' or ask Gemini to write a complete, runnable HTML/JS program. You don't need to know how to code — Gemini builds it, you steer the design.">AI Code Generation</div>
+        <button type="button" class="card-toggle" aria-expanded="false" onclick="toggleSteps(this)"><span>View build steps</span> <span class="arrow">↓</span></button>
+        <div class="card-steps">
+          <div class="step-item"><div class="step-badge">1</div><div>Open AI Studio → New Prompt. Set <span class="jargon" data-tip="A dial (0.0 to 1.0) that controls how creative the AI is. 0.8 means 'be creative' — perfect for generating fun, varied code.">Temperature</span> to <strong>0.8</strong> (we want creative output). No <span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is and how to behave — like giving it a job description.">System Instructions</span> needed for this one.</div></div>
+          <div class="step-item"><div class="step-badge">2</div><div>Copy the starter <span class="jargon" data-tip="The message you type to the AI. A prompt is your question or instruction — the more detail you include, the better the result.">prompt</span> below and paste it into the chat. Gemini will generate a complete <span class="jargon" data-tip="HTML is the language web pages are written in. You don't need to understand it — Gemini writes it for you. Just save the file and open it in your browser.">HTML</span> page with a working confetti cannon.</div></div>
+          <div class="step-item"><div class="step-badge">3</div><div>Copy the generated code → open a new file in any text editor (TextEdit, Notepad, etc.) → paste → save as <strong>confetti.html</strong> → double-click to open in your browser.</div></div>
+          <div class="step-item"><div class="step-badge">4</div><div><strong>Now customize it!</strong> Go back to AI Studio and try follow-up prompts to change what the cannon shoots. See the customization ideas below.</div></div>
+          <div class="step-item"><div class="step-badge">5</div><div>Each time Gemini gives you updated code, paste it into your file and refresh the browser. <span class="jargon" data-tip="Try it, look at the result, ask the AI to change something, and repeat. Each round gets closer to what you want.">Iterate</span> until you love it!</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Starter Prompt — paste this into AI Studio</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">Create a single HTML file with a full-screen confetti blaster game.
+
+Requirements:
+- A big button in the center that says "BLAST!" in bold text
+- When clicked, an explosion of colorful confetti particles shoots out from the button in all directions
+- Each particle should be a random color, random size (5-15px), and have realistic gravity + fade-out
+- Add a particle count (at least 100 per click)
+- Include a fun background (dark gradient)
+- Make it mobile-friendly with touch support
+- Add a "shake" animation on the button when clicked
+- Include a blast counter in the corner that tracks total blasts
+- Use only vanilla HTML, CSS, and JavaScript — no libraries
+- Make it visually polished and satisfying to use</div>
+          </div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Customization Prompts — try these next!</span><button type="button" class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">CHANGE WHAT IT SHOOTS — copy any of these follow-up prompts:
+
+🎓 SAC THEMED:
+"Change the confetti to only use SAC colors: red (#C8102E), gold (#E5A823), and white. Add 'Go Dons!' text that floats up with each blast."
+
+🍕 EMOJI BLASTER:
+"Replace the confetti particles with random emojis: 🎉 🔥 🌟 ⭐ 🎊 💥 🚀 🎯. Make them spin as they fly."
+
+📚 GRADUATION MODE:
+"Make it shoot graduation caps 🎓, diplomas 📜, and stars ⭐. Change the button text to 'CELEBRATE!' and add a gold background."
+
+❄️ SNOWFALL MODE:
+"Turn it into a snowflake blaster. Use white and light blue particles shaped like snowflakes. Make them drift slowly and land at the bottom of the screen."
+
+🎨 PAINT SPLATTER:
+"Change the confetti into paint splatter blobs. When they hit the edges, they should leave a colored stain on the background. Let the stains build up over multiple blasts."
+
+💬 WORD BLASTER:
+"Instead of confetti, make it blast random encouraging words: 'Amazing!', 'You did it!', 'SAC Pride!', 'Dean's List!', 'Transfer Ready!'. Different colors and sizes."
+
+🌈 RAINBOW TRAIL:
+"Add a rainbow trail that follows the mouse cursor. When you click, the rainbow explodes into confetti from the cursor position, not just the button."
+
+⚡ POWER-UP MODE:
+"Add a power meter. Holding down the button charges it up (show a growing ring). Releasing it blasts more confetti based on how long you held. Max charge = 500 particles."
+
+🔊 ADD SOUND:
+"Add a satisfying pop/explosion sound effect when the button is clicked. Use the Web Audio API to generate the sound — no external files."
+
+COMBINE THEM:
+"Combine the SAC theme with the power-up meter and sound effects. Make it the ultimate SAC celebration blaster."</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1565,18 +2005,18 @@ FOLLOW-UP PROMPTS:
     <p class="section-lead">Run through this before every AI Studio build. Tap each item to check it off.</p>
   </div>
   <div class="checklist-progress reveal" id="checkProgress">
-    <span class="checklist-count" id="checkCount">0 / 8</span>
+    <span class="checklist-count" id="checkCount" aria-live="polite">0 / 8</span>
     <div class="checklist-bar-track"><div class="checklist-bar-fill" id="checkBar"></div></div>
   </div>
   <div class="checklist-grid">
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Select Gemini 1.5 Pro</strong><span>Use Pro for complex tasks like PDF analysis and video. Flash for quick Q&A.</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Set the Vibe — System Instructions</strong><span>Define a role before asking anything. "You are a SAC Dean of Instruction. Be professional and student-focused."</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Set Temperature</strong><span>0.0–0.3 for grading/facts. 0.7–1.0 for creative writing and brainstorming.</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Upload your context file</strong><span>Use the paperclip — PDFs, videos, images. Don't copy-paste a wall of text when a file upload works.</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Iterate at least 3 times</strong><span>First output is a draft. Push back. Ask for alternatives. "Make this more concise" or "rewrite for a student audience."</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Save as a Prompt File</strong><span>Click Save in AI Studio to create a reusable tool. Name it clearly and share with your department.</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Click "Get Code" to Deploy</strong><span>Paste the generated code into Google Apps Script to embed your tool in Sheets or Docs.</span></div></div>
-    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><strong>Verify AI output critically</strong><span>Always fact-check transfer requirements, policy details, and dates before sharing with students.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Select <span class="jargon" data-tip="Google's most powerful AI model. 'Pro' handles complex tasks like reading PDFs, analyzing video, and long conversations. There's also a lighter 'Flash' version for quick tasks.">Gemini 1.5 Pro</span></strong><span>Use Pro for complex tasks like PDF analysis and video. <span class="jargon" data-tip="A faster, lighter version of Google's AI. Great for quick questions and simple tasks. Use Pro when you need deeper analysis.">Flash</span> for quick Q&amp;A.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Set the Vibe — <span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is, who it's talking to, and how to behave — like giving it a job description before the conversation starts.">System Instructions</span></strong><span>Define a role before asking anything. "You are a SAC Dean of Instruction. Be professional and student-focused."</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Set <span class="jargon" data-tip="A dial (0.0 to 1.0) that controls how predictable vs. creative the AI is. Low = consistent facts every time. High = surprising, varied ideas.">Temperature</span></strong><span>0.0–0.3 for grading/facts. 0.7–1.0 for creative writing and brainstorming.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Upload your context file</strong><span>Use the paperclip — PDFs, videos, images. Don't copy-paste a wall of text when a file upload works.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong><span class="jargon" data-tip="Send your prompt, look at the AI's response, then refine your instructions and try again. Each round improves the output — like editing a rough draft.">Iterate</span> at least 3 times</strong><span>First output is a draft. Push back. Ask for alternatives. "Make this more concise" or "rewrite for a student audience."</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Save as a <span class="jargon" data-tip="A saved prompt inside AI Studio that you can reopen, edit, and share with colleagues. Like a reusable template — create once, use anytime.">Prompt File</span></strong><span>Click Save in AI Studio to create a reusable tool. Name it clearly and share with your department.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Click <span class="jargon" data-tip="A button in AI Studio that generates ready-to-paste programming code. You don't need to understand the code — just copy and paste it where instructed.">"Get Code"</span> to <span class="jargon" data-tip="Making your AI tool available for real use — like embedding it in a Google Sheet so your department can use it, not just you.">Deploy</span></strong><span>Paste the generated code into <span class="jargon" data-tip="Google's free scripting platform built into Sheets, Docs, and Forms. You paste code here to turn your AI prompt into a live, shareable tool.">Google Apps Script</span> to embed your tool in Sheets or Docs.</span></div></div>
+    <div class="check-row reveal" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCheck(this,event)"><div class="check-box"></div><div class="check-text"><strong>Verify AI output critically</strong><span>Always fact-check transfer requirements, policy details, and dates before sharing with students.</span></div></div>
   </div>
 </section>
 
@@ -1584,7 +2024,7 @@ FOLLOW-UP PROMPTS:
   <div class="reveal">
     <p class="section-eyebrow">Quick Reference</p>
     <h2 class="section-title">AI Studio Tips</h2>
-    <p class="section-lead">The two settings that change everything: System Instructions and Temperature.</p>
+    <p class="section-lead">The two settings that change everything: <span class="jargon" data-tip="A paragraph you write at the top of AI Studio that tells the AI who it is and how to behave — like a job description.">System Instructions</span> and <span class="jargon" data-tip="A dial (0.0 to 1.0) that controls how predictable vs. creative the AI is.">Temperature</span>.</p>
   </div>
   <div class="temp-guide reveal">
     <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:0.5rem;">What Is Temperature?</h3>
@@ -1627,19 +2067,23 @@ FOLLOW-UP PROMPTS:
     </div>
     <p class="temp-tip"><strong>Quick rule:</strong> Need the same answer every time? Go low. Want to be surprised? Go high. Not sure? Start at 0.5 and adjust.</p>
   </div>
-  <div class="system-instr-box reveal">
+  <div class="system-instr-box reveal" id="system-instructions">
     <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:1rem;">System Instructions Formula</h3>
     <div class="formula-code">
       You are a <span style="color:#00c896;">[role]</span> at Santa Ana College.<br/>
       Your audience is <span style="color:#E5A823;">[who]</span>.<br/>
       Always <span style="color:#ff8a8a;">[behavior 1]</span> and <span style="color:#ff8a8a;">[behavior 2]</span>.<br/>
       Never <span style="color:#a598ff;">[thing to avoid]</span>.<br/>
-      Format your output as <span style="color:#7dedea;">[format: table / CSV / markdown / bullet list]</span>.
+      Format your output as <span style="color:#7dedea;">[format: table / <span class="jargon" data-tip="A Comma-Separated Values file — a simple spreadsheet format that Excel, Google Sheets, and Google Calendar can all import.">CSV</span> / <span class="jargon" data-tip="A simple text formatting language that uses symbols like # for headings and * for bold. AI Studio outputs in markdown, and you can paste it into Google Docs.">markdown</span> / bullet list]</span>.
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:0.75rem;">Fill in the brackets before you ask your first question. This single step accounts for ~80% of quality improvement.</p>
   </div>
 </section>
 </main>
+
+<button type="button" class="back-to-top" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top" title="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <footer>
   <p>Built for <strong>Santa Ana College</strong> — Vibe Coding the Future of SAC &nbsp;·&nbsp; Spring 2026</p>
@@ -1665,32 +2109,115 @@ FOLLOW-UP PROMPTS:
     }
 
     window.cycleTheme = function() {
-      var cur = localStorage.getItem('sac-theme') || 'dark';
+      var cur; try { cur = localStorage.getItem('sac-theme'); } catch(e) {}
+      cur = cur || 'dark';
       var next = themes[(themes.indexOf(cur) + 1) % themes.length];
-      localStorage.setItem('sac-theme', next);
+      try { localStorage.setItem('sac-theme', next); } catch(e) {}
       applyTheme(next);
     };
 
-    applyTheme(localStorage.getItem('sac-theme') || 'dark');
+    var initTheme = 'dark';
+    try { initTheme = localStorage.getItem('sac-theme') || 'dark'; } catch(e) {}
+    applyTheme(initTheme);
+
+    // --- Tag popovers ---
+    var activePopover = null;
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.tag-popover')) return;
+      var tag = e.target.closest('[data-tip]');
+      if (tag) {
+        if (activePopover && activePopover.tag === tag) {
+          closePopover();
+          if (tag.href) window.location.href = tag.getAttribute('href');
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        closePopover();
+
+        var pop = document.createElement('div');
+        pop.className = 'tag-popover';
+        pop.textContent = tag.getAttribute('data-tip');
+        if (tag.href) {
+          var link = document.createElement('a');
+          link.href = tag.getAttribute('href');
+          link.textContent = 'Go to section \u2192';
+          link.style.cssText = 'display:block;margin-top:8px;font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;';
+          pop.appendChild(link);
+        }
+        document.body.appendChild(pop);
+
+        var tagRect = tag.getBoundingClientRect();
+        var popW = pop.offsetWidth;
+        var popH = pop.offsetHeight;
+        var gap = 10;
+        var centerX = tagRect.left + tagRect.width / 2;
+        var popLeft = centerX - popW / 2;
+        var vw = window.innerWidth;
+
+        if (popLeft < 12) popLeft = 12;
+        if (popLeft + popW > vw - 12) popLeft = vw - 12 - popW;
+
+        var arrowX = centerX - popLeft;
+        pop.style.setProperty('--arrow-x', arrowX + 'px');
+
+        if (tagRect.top - popH - gap > 0) {
+          pop.style.top = (tagRect.top - popH - gap) + 'px';
+        } else {
+          pop.style.top = (tagRect.bottom + gap) + 'px';
+          pop.classList.add('flip');
+        }
+        pop.style.left = popLeft + 'px';
+        pop.style.animation = 'popIn 0.15s ease-out';
+
+        activePopover = { el: pop, tag: tag };
+        return;
+      }
+      closePopover();
+    });
+    function closePopover() {
+      if (activePopover) {
+        activePopover.el.remove();
+        activePopover = null;
+      }
+    }
+    window.addEventListener('scroll', function() {
+      if (activePopover) closePopover();
+    }, { passive: true });
 
     // --- Accessibility panel ---
     window.toggleA11yPanel = function() {
-      document.getElementById('a11yPanel').classList.toggle('open');
+      var panel = document.getElementById('a11yPanel');
+      var btn = document.getElementById('a11yToggle');
+      if (!panel) return;
+      panel.classList.toggle('open');
+      var isOpen = panel.classList.contains('open');
+      if (btn) btn.setAttribute('aria-expanded', isOpen);
     };
 
-    // --- Text scaling ---
+    // --- Text scaling (zoom + transform fallback for Firefox) ---
+    function applyScale(main, pct) {
+      if (!main) return;
+      var ratio = pct / 100;
+      if ('zoom' in main.style) {
+        main.style.zoom = ratio;
+      } else {
+        main.style.transform = 'scale(' + ratio + ')';
+        main.style.transformOrigin = 'top center';
+      }
+    }
     window.setScale = function(pct) {
       var main = document.getElementById('main');
-      if (main) main.style.zoom = pct / 100;
-      localStorage.setItem('sac-text-size', pct);
+      applyScale(main, pct);
+      try { localStorage.setItem('sac-text-size', pct); } catch(e) {}
       document.querySelectorAll('.size-btn').forEach(function(b) {
         b.classList.toggle('active', Number(b.dataset.size) === pct);
       });
     };
-    var savedScale = Number(localStorage.getItem('sac-text-size')) || 100;
+    var savedScale = 100;
+    try { savedScale = Number(localStorage.getItem('sac-text-size')) || 100; } catch(e) {}
     if (savedScale !== 100) {
-      var main = document.getElementById('main');
-      if (main) main.style.zoom = savedScale / 100;
+      applyScale(document.getElementById('main'), savedScale);
     }
     setTimeout(function() {
       document.querySelectorAll('.size-btn').forEach(function(b) {
@@ -1702,6 +2229,7 @@ FOLLOW-UP PROMPTS:
     var isReading = false;
     window.toggleReader = function() {
       var btn = document.getElementById('readerBtn');
+      if (!btn) return;
       if (!('speechSynthesis' in window)) {
         btn.textContent = 'Not supported';
         return;
@@ -1712,7 +2240,9 @@ FOLLOW-UP PROMPTS:
         btn.innerHTML = '&#9654; Read Page';
         btn.classList.remove('active');
       } else {
-        var text = document.getElementById('main').innerText;
+        var mainEl = document.getElementById('main');
+        if (!mainEl) return;
+        var text = mainEl.innerText;
         var chunks = [];
         var maxLen = 4000;
         for (var i = 0; i < text.length; i += maxLen) {
@@ -1742,8 +2272,10 @@ FOLLOW-UP PROMPTS:
     // Close a11y panel on outside click
     document.addEventListener('click', function(e) {
       var panel = document.getElementById('a11yPanel');
+      var toggle = document.getElementById('a11yToggle');
       if (panel && panel.classList.contains('open') && !e.target.closest('.a11y-wrap')) {
         panel.classList.remove('open');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -1753,6 +2285,7 @@ FOLLOW-UP PROMPTS:
     var closeSVG = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>';
 
     function updateProgress() {
+      if (!progressEl) { ticking = false; return; }
       var scrolled = window.scrollY;
       var total = document.body.scrollHeight - window.innerHeight;
       var pct = total > 0 ? Math.min((scrolled / total) * 100, 100) : 0;
@@ -1780,6 +2313,8 @@ FOLLOW-UP PROMPTS:
           updateProgress();
           updateActiveNav();
           closeNav();
+          var btt = document.getElementById('btt');
+          if (btt) btt.classList.toggle('visible', window.scrollY > 400);
         });
         ticking = true;
       }
@@ -1803,12 +2338,22 @@ FOLLOW-UP PROMPTS:
         var row = e.target.closest('.check-row');
         if (row) { e.preventDefault(); window.toggleCheck(row); }
       }
-      if (e.key === 'Escape') closeNav();
+      if (e.key === 'Escape') {
+        closeNav();
+        closePopover();
+        var panel = document.getElementById('a11yPanel');
+        var toggle = document.getElementById('a11yToggle');
+        if (panel && panel.classList.contains('open')) {
+          panel.classList.remove('open');
+          if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
+        }
+      }
     });
 
     window.toggleNav = function() {
       var nav = document.getElementById('navLinks');
       var icon = document.getElementById('nav-icon');
+      if (!nav || !icon) return;
       var isOpen = nav.classList.toggle('open');
       icon.innerHTML = isOpen ? closeSVG : hamburgerSVG;
     };
@@ -1816,10 +2361,24 @@ FOLLOW-UP PROMPTS:
     window.closeNav = closeNav;
     function closeNav() {
       var nav = document.getElementById('navLinks');
-      if (!nav.classList.contains('open')) return;
+      if (!nav || !nav.classList.contains('open')) return;
       nav.classList.remove('open');
-      document.getElementById('nav-icon').innerHTML = hamburgerSVG;
+      var icon = document.getElementById('nav-icon');
+      if (icon) icon.innerHTML = hamburgerSVG;
     }
+
+    window.downloadSyllabus = function() {
+      var el = document.querySelector('#projects .sample-text');
+      if (!el) return;
+      var blob = new Blob([el.textContent], { type: 'text/plain' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'SAC-ENGL101-Syllabus-Sample.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    };
 
     window.copyData = function(btn) {
       var text = btn.closest('.sample-block').querySelector('.sample-text').textContent;
@@ -1852,7 +2411,8 @@ FOLLOW-UP PROMPTS:
       label.textContent = isOpen ? 'Hide steps' : 'View build steps';
     };
 
-    window.toggleCheck = function(row) {
+    window.toggleCheck = function(row, ev) {
+      if (ev && ev.target.closest('[data-tip]')) return;
       row.classList.toggle('done');
       row.setAttribute('aria-checked', row.classList.contains('done'));
       updateChecklistProgress();
@@ -1862,8 +2422,10 @@ FOLLOW-UP PROMPTS:
     function updateChecklistProgress() {
       var total = document.querySelectorAll('.check-row').length;
       var done = document.querySelectorAll('.check-row.done').length;
-      document.getElementById('checkCount').textContent = done + ' / ' + total;
-      document.getElementById('checkBar').style.width = (done / total * 100) + '%';
+      var countEl = document.getElementById('checkCount');
+      if (countEl) countEl.textContent = done + ' / ' + total;
+      var barEl = document.getElementById('checkBar');
+      if (barEl) barEl.style.width = (total > 0 ? (done / total * 100) : 0) + '%';
     }
 
     function saveChecklist() {
