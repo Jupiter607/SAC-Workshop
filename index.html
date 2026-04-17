@@ -1191,6 +1191,54 @@
     }
     .theme-toggle:hover { color: var(--text); border-color: var(--accent); }
     .theme-toggle svg { display: block; }
+
+    /* --- Accessibility hint banner --- */
+    .a11y-hint {
+      position: fixed;
+      top: 60px;
+      right: 16px;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 12px 16px;
+      z-index: 160;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 8px 28px rgba(0,200,150,0.15);
+      animation: hintSlide 0.4s ease-out;
+      max-width: 310px;
+      cursor: pointer;
+    }
+    .a11y-hint-text { font-size: 13px; line-height: 1.55; color: var(--text); }
+    .a11y-hint-text strong { color: var(--accent); }
+    .a11y-hint-dismiss {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      display: block;
+    }
+    .a11y-hint-icons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .a11y-hint-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: rgba(0,200,150,0.1);
+      border: 1px solid rgba(0,200,150,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      animation: hintPulse 1.5s ease-in-out 3;
+    }
+    @keyframes hintSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes hintPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,200,150,0); } 50% { box-shadow: 0 0 0 6px rgba(0,200,150,0.2); } }
   </style>
 </head>
 <body>
@@ -1244,6 +1292,21 @@
     <li><a href="#tips" onclick="closeNav()">Tips</a></li>
   </ul>
 </nav>
+
+<div class="a11y-hint" id="a11yHint" onclick="this.remove()">
+  <div class="a11y-hint-icons">
+    <div class="a11y-hint-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </div>
+    <div class="a11y-hint-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="2.5"/><path d="M12 7v6m0 0l-3 7m3-7l3 7"/><path d="M5 10c2.3-.8 4.6-1.2 7-1.2s4.7.4 7 1.2"/></svg>
+    </div>
+  </div>
+  <div class="a11y-hint-text">
+    <strong>Need a different view?</strong> Use the buttons in the top bar to switch between <strong>Dark, Light, or High Contrast</strong> mode and adjust <strong>text size</strong>.
+    <span class="a11y-hint-dismiss">Tap to dismiss</span>
+  </div>
+</div>
 
 <main id="main">
 <section class="hero" id="home">
@@ -2119,6 +2182,24 @@ COMBINE THEM:
     var initTheme = 'dark';
     try { initTheme = localStorage.getItem('sac-theme') || 'dark'; } catch(e) {}
     applyTheme(initTheme);
+
+    // --- Accessibility hint banner ---
+    (function() {
+      var hint = document.getElementById('a11yHint');
+      if (!hint) return;
+      var seen = false;
+      try { seen = localStorage.getItem('sac-hint-seen'); } catch(e) {}
+      if (seen) { hint.remove(); return; }
+      function dismiss() {
+        hint.style.opacity = '0';
+        hint.style.transform = 'translateY(-10px)';
+        hint.style.transition = 'opacity 0.3s, transform 0.3s';
+        setTimeout(function() { hint.remove(); }, 300);
+        try { localStorage.setItem('sac-hint-seen', '1'); } catch(e) {}
+      }
+      hint.addEventListener('click', dismiss);
+      setTimeout(dismiss, 12000);
+    })();
 
     // --- Tag popovers ---
     var activePopover = null;
