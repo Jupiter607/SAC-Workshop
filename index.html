@@ -480,7 +480,7 @@
     }
 
     .card-steps.open {
-      max-height: 600px;
+      max-height: 1000px;
       opacity: 1;
       margin-top: 1rem;
       padding-top: 1rem;
@@ -668,6 +668,106 @@
       font-family: 'DM Sans', monospace;
     }
 
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .resource-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .resource-card:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: var(--surface2);
+      transform: translateY(-2px);
+    }
+
+    .resource-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: var(--heading);
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .resource-info { flex: 1; min-width: 0; }
+    .resource-info strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .resource-info span { font-size: 12px; color: var(--muted); display: block; }
+    .resource-arrow { color: var(--muted); font-size: 18px; flex-shrink: 0; transition: transform 0.2s; }
+    .resource-card:hover .resource-arrow { transform: translateX(3px); }
+
+    .sample-block {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .sample-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .sample-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .copy-btn {
+      background: rgba(229,168,35,0.12);
+      border: 1px solid rgba(229,168,35,0.25);
+      color: var(--gold);
+      font-family: var(--body);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .copy-btn:hover { background: rgba(229,168,35,0.2); border-color: rgba(229,168,35,0.4); }
+    .copy-btn.copied { background: rgba(0,200,150,0.15); border-color: rgba(0,200,150,0.3); color: var(--accent); }
+
+    .sample-text {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 220px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.1) transparent;
+    }
+    .sample-text::-webkit-scrollbar { width: 4px; }
+    .sample-text::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
     footer {
       border-top: 1px solid var(--border);
       padding: 2.5rem 1.5rem;
@@ -810,10 +910,11 @@
     </svg>
   </button>
   <ul class="nav-links" id="navLinks" role="list">
+    <li><a href="#resources" onclick="closeNav()">Resources</a></li>
     <li><a href="#agenda" onclick="closeNav()">Agenda</a></li>
     <li><a href="#projects" onclick="closeNav()">Projects</a></li>
     <li><a href="#checklist" onclick="closeNav()">Checklist</a></li>
-    <li><a href="#tips" onclick="closeNav()">AI Studio Tips</a></li>
+    <li><a href="#tips" onclick="closeNav()">Tips</a></li>
   </ul>
 </nav>
 
@@ -825,7 +926,7 @@
     Santa Ana College — Spring 2026
   </div>
   <h1>Vibe Coding the<br /><span class="text-red">Future</span> of <span>SAC</span></h1>
-  <p class="hero-sub">A 2-hour hands-on workshop using Google AI Studio to build real tools — no syntax required.</p>
+  <p class="hero-sub">A 2-hour hands-on workshop using Google AI Studio to build real tools — no syntax required. All sample data included for self-paced completion.</p>
   <div class="hero-chips">
     <div class="chip"><span class="pip" style="background:var(--accent)"></span> 120 minutes</div>
     <div class="chip"><span class="pip" style="background:var(--gold)"></span> Google AI Studio</div>
@@ -833,8 +934,66 @@
     <div class="chip"><span class="pip" style="background:var(--red)"></span> Faculty & Admin</div>
   </div>
   <div class="hero-cta">
-    <a href="#projects" class="btn-primary">Choose Your Project</a>
-    <a href="#agenda" class="btn-outline">View Agenda</a>
+    <a href="https://aistudio.google.com" target="_blank" rel="noopener" class="btn-primary">Open AI Studio</a>
+    <a href="#projects" class="btn-outline">Choose Your Project</a>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="reveal">
+    <p class="section-eyebrow">Start Here</p>
+    <h2 class="section-title">Resources & Links</h2>
+    <p class="section-lead">Bookmark these before you begin. Every project uses AI Studio — open it now.</p>
+  </div>
+  <div class="resource-grid">
+    <a href="https://aistudio.google.com" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(200,16,46,0.12);color:var(--red);">AI</div>
+      <div class="resource-info">
+        <strong>Google AI Studio</strong>
+        <span>Your main workspace — open this first</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a href="https://aistudio.google.com/prompts/new_chat" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(229,168,35,0.12);color:var(--gold);">+</div>
+      <div class="resource-info">
+        <strong>New Chat Prompt</strong>
+        <span>Direct link to start a new chat session</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a href="https://script.google.com" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(0,200,150,0.12);color:var(--accent);">{ }</div>
+      <div class="resource-info">
+        <strong>Google Apps Script</strong>
+        <span>Deploy your tool into Sheets or Docs</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a href="https://calendar.google.com/calendar/r/settings/export" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(124,106,255,0.12);color:#a598ff;">Cal</div>
+      <div class="resource-info">
+        <strong>Google Calendar Import</strong>
+        <span>Import CSV deadlines from Project 01</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a href="https://assist.org" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(78,205,196,0.12);color:#7dedea;">T</div>
+      <div class="resource-info">
+        <strong>ASSIST.org</strong>
+        <span>Official UC/CSU transfer tool for Project 06</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a href="https://www.sac.edu" target="_blank" rel="noopener" class="resource-card reveal">
+      <div class="resource-icon" style="background:rgba(255,107,157,0.12);color:#ffa8c5;">SAC</div>
+      <div class="resource-info">
+        <strong>Santa Ana College</strong>
+        <span>College homepage for reference</span>
+      </div>
+      <span class="resource-arrow" aria-hidden="true">&rarr;</span>
+    </a>
   </div>
 </section>
 
@@ -926,6 +1085,46 @@
           <div class="step-item"><div class="step-badge">2</div><div>In System Instructions: <em>"You are an academic advisor at SAC. Be supportive and student-friendly."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Create a 10-question student FAQ and a Google Calendar-ready CSV of all deadlines from this syllabus."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Download the CSV output → open Google Calendar → import the file. Share the FAQ with students in Canvas.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Syllabus</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">ENGLISH 101: FRESHMAN COMPOSITION
+Santa Ana College — Spring 2026
+Instructor: Dr. Maria Santos | msantos@sac.edu | Office: L-214
+Office Hours: Tu/Th 1:00–2:30 PM
+
+COURSE DESCRIPTION
+Develops college-level reading and writing skills. Students compose a minimum of 6,000 words in essays emphasizing analysis, argument, and research. Prerequisite: Guided self-placement or ENGL 060 with C or better.
+
+REQUIRED MATERIALS
+- They Say / I Say (5th ed.) — Graff &amp; Birkenstein
+- SAC Library databases via Canvas
+- Google Docs for all submissions
+
+GRADING
+Participation &amp; Discussion Posts: 10%
+Essay 1 — Literacy Narrative (750 words): 10% — Due Feb 14
+Essay 2 — Rhetorical Analysis (1,000 words): 15% — Due Mar 7
+Essay 3 — Argument Essay (1,200 words): 20% — Due Apr 4
+Research Paper (2,000 words): 25% — Due May 2
+Portfolio &amp; Reflection: 10% — Due May 16
+Peer Review Sessions (4 total): 10%
+
+KEY DATES
+Feb 3 — Last day to add/drop without W
+Feb 14 — Essay 1 due 11:59 PM
+Feb 21 — Peer Review #1 (in-class)
+Mar 7 — Essay 2 due 11:59 PM
+Mar 14 — Peer Review #2
+Mar 31–Apr 4 — Spring Break
+Apr 4 — Essay 3 due 11:59 PM
+Apr 25 — Peer Review #4
+May 2 — Research Paper due
+May 16 — Portfolio due
+May 22 — Final grades posted
+
+LATE WORK: 10% deduction within 48 hrs. Not accepted after without prior arrangement.
+AI POLICY: AI tools OK for brainstorming/outlining. All submitted writing must be your own.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -942,6 +1141,33 @@
           <div class="step-item"><div class="step-badge">2</div><div>Set temperature to 0.4 — balanced for both consistency and creative suggestions.</div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Review this for hidden curriculum bias. Suggest 3 ways to make it more accessible for ESL students and first-gen learners at SAC."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Ask it to fully rewrite the assignment using its own suggestions. Compare before and after.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Assignment to Audit</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">SOCIOLOGY 101 — MIDTERM RESEARCH PAPER
+Due: March 15, 2026 | Worth: 20% of final grade
+
+Write a 5-page research paper analyzing a social institution (family, education, religion, government, or economy) using the functionalist perspective.
+
+Requirements:
+1. Include a clear thesis statement in the introduction
+2. Use at least 4 peer-reviewed sources from JSTOR or Google Scholar
+3. Follow APA format with in-text citations and reference page
+4. Demonstrate critical thinking and college-level writing
+
+Your paper should explore how the institution contributes to social stability.
+
+Papers with excessive grammatical errors will receive a grade deduction. Submit via Turnitin on Canvas by 11:59 PM. No late submissions accepted.
+
+If you need help, visit the Writing Center (M–F, 9 AM–3 PM).
+
+Rubric:
+- Thesis &amp; Argument: 30 pts
+- Use of Sources: 25 pts
+- APA Formatting: 20 pts
+- Grammar &amp; Mechanics: 25 pts
+
+NOTE FOR WORKSHOP: This assignment has intentional equity gaps — limited perspective options, assumes database access knowledge, strict late policy with no alternatives, and grammar-weighted rubric that may disadvantage ESL students.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -958,6 +1184,30 @@
           <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a curriculum specialist. Be concise and pedagogically sound."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Identify the 3 most critical concepts. Provide a time-stamped summary and a 5-question Canvas-compatible quiz."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Copy the quiz questions directly into Canvas New Quizzes. Save as a Prompt File for future lectures.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Lecture Transcript</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">[00:00] Welcome back everyone. Today we're covering Chapter 6 — photosynthesis.
+
+[01:15] What is photosynthesis? Plants convert light energy into chemical energy. The equation: 6CO2 + 6H2O + light → C6H12O6 + 6O2.
+
+[03:42] Where does this happen? In the chloroplasts. Inside you've got thylakoids (stacked into grana) and the stroma (fluid around them).
+
+[06:18] Two stages. Stage one: light-dependent reactions in the thylakoid membranes. Water is split (photolysis) producing ATP, NADPH, and oxygen.
+
+[09:30] Stage two: the Calvin Cycle in the stroma. ATP and NADPH power carbon fixation into glucose. Key enzyme: RuBisCO — the most abundant protein on Earth.
+
+[12:45] Common misconception: "light-independent" doesn't mean "happens in the dark." The Calvin Cycle absolutely depends on ATP and NADPH from the light reactions.
+
+[15:10] Three factors affecting rate: light intensity, CO2 concentration, and temperature. Each increases rate up to a saturation point.
+
+[18:00] Real-world connection: greenhouses control all three variables to maximize photosynthesis.
+
+[19:30] Exam review: know the equation, where each stage happens, inputs/outputs for each, and the three limiting factors.
+
+[20:15] Questions before we move to cellular respiration?
+
+TIP: If you don't have a video file, paste this transcript into AI Studio instead — Gemini will treat it the same way.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -974,6 +1224,24 @@
           <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a Program Manager at SAC. Extract action items, deadlines, and stakeholders. Format as a markdown table."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Paste your raw meeting notes or Zoom transcript into the chat and hit Run.</div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Copy the markdown table into a Google Doc. Save this as a Prompt File — use it after every meeting.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Meeting Notes</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">SAC Student Success Committee — April 3, 2026 | Room A-101
+
+Present: VP Rodriguez, Dean Kim, Prof. Washington, Counselor Tran, IT Director Okafor, Dr. Patel (EOPS)
+
+VP Rodriguez said we need to finalize the summer bridge program proposal by April 18 or we miss the district deadline. She asked Dean Kim to get enrollment projections from IR by April 11.
+
+Counselor Tran said the new early alert system in Canvas is confusing — maybe 30% of faculty are using it. Prof. Washington agreed, zero training so far. IT Director Okafor can do a 30-min webinar but needs help from Academic Affairs on documentation. Dean Kim volunteered to draft the training guide by April 14.
+
+Dr. Patel raised EOPS laptop loaner issue — only 12 of 80 eligible students have applied. She wants a targeted Canvas announcement + email blast. VP Rodriguez approved, asked for the draft to go to Marketing by April 8.
+
+Long discussion on Guided Pathways completion data. First-gen students are 14 points below college average. VP Rodriguez wants a task force. Prof. Washington and Counselor Tran will co-chair. First meeting by April 21.
+
+Okafor: Wi-Fi complaints in building S. Ordered 6 access points, needs facilities approval. Work order by April 7.
+
+Adjourned 3:15 PM. Next meeting: April 17.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -990,6 +1258,26 @@
           <div class="step-item"><div class="step-badge">2</div><div>Add 3 few-shot examples: write a student question, then write the Socratic hint response you want. Repeat 3 times.</div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Test it — try to "break" it by demanding a direct answer. Refine your instructions until it holds.</div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Save as a Prompt File and share the link with students as a study companion.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Few-Shot Examples (Math 080)</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">EXAMPLE 1:
+Student: "What's 3/4 + 1/2? I keep getting it wrong."
+Tutor: "Good question! Before adding fractions, they need the same denominator. What number could both 4 and 2 divide into evenly?"
+
+EXAMPLE 2:
+Student: "I don't understand negative exponents. What is 2^(-3)?"
+Tutor: "Think about regular exponents — 2^3 means 2 × 2 × 2 = 8. A negative exponent does the opposite. If positive means multiply, what operation do you think negative means?"
+
+EXAMPLE 3:
+Student: "Just tell me the answer to -5 + 8."
+Tutor: "I know it's tempting! But let's build your intuition. Picture a number line — you're standing at -5. Walk 8 steps to the right. Where do you end up? Try counting it out."
+
+TEST PROMPTS (try these after setup):
+→ "What's the area of a triangle with base 10 and height 6?"
+→ "PLEASE just give me the answer to 5x = 30"
+→ "I have a test tomorrow, can you just solve these 5 problems?"
+(The tutor should guide, never give direct answers.)</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1006,6 +1294,28 @@
           <div class="step-item"><div class="step-badge">2</div><div>System Instructions: <em>"You are a SAC transfer counselor. Always cite the source URL for every requirement you list."</em></div></div>
           <div class="step-item"><div class="step-badge">3</div><div>Prompt: <em>"Search for 2026 CSU transfer requirements for Business Administration and create a comparison chart for our students."</em></div></div>
           <div class="step-item"><div class="step-badge">4</div><div>Paste the output into a Google Sheet and share with the counseling department.</div></div>
+          <div class="sample-block">
+            <div class="sample-header"><span class="sample-label">Sample Counselor Query</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="sample-text">INITIAL PROMPT (with Google Search tool ON):
+Search for and compare the current transfer requirements for:
+1. CSU Fullerton — Business Administration (B.A.)
+2. CSU Long Beach — Business Administration (B.S.)
+3. UC Irvine — Business Economics (B.A.)
+
+For each, find:
+- Required GPA (minimum and competitive)
+- Required prerequisite courses
+- Application deadlines
+- SAC course equivalencies if available
+
+Format as a comparison table a counselor could hand to a student.
+
+FOLLOW-UP PROMPTS:
+→ "Which is most realistic for a student with a 3.2 GPA?"
+→ "What SAC courses satisfy the calculus requirement for UCI Business Economics?"
+→ "Create a 2-year course plan for a SAC student targeting CSUF Business Admin"
+→ "Add a column for estimated total cost including tuition and fees"</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1149,6 +1459,27 @@
       nav.classList.remove('open');
       document.getElementById('nav-icon').innerHTML = hamburgerSVG;
     }
+
+    window.copyData = function(btn) {
+      var text = btn.closest('.sample-block').querySelector('.sample-text').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    };
 
     window.toggleSteps = function(btn) {
       var steps = btn.nextElementSibling;
