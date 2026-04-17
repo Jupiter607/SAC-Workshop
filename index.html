@@ -940,6 +940,108 @@
     html.high-contrast .hero-badge { border-width: 2px; }
     html.high-contrast .tag { border-width: 1.5px; }
 
+    /* --- Accessibility panel --- */
+    .a11y-wrap { position: relative; }
+
+    .a11y-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .a11y-btn:hover { color: var(--text); border-color: var(--accent); }
+    .a11y-btn svg { display: block; }
+
+    .a11y-panel {
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      min-width: 220px;
+      display: none;
+      z-index: 150;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    html.light .a11y-panel { box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+    .a11y-panel.open { display: block; }
+
+    .a11y-section { margin-bottom: 14px; }
+    .a11y-section:last-child { margin-bottom: 0; }
+
+    .a11y-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .a11y-btns { display: flex; gap: 6px; }
+
+    .size-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--heading);
+      font-weight: 600;
+      padding: 6px 0;
+      flex: 1;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .size-btn:hover { border-color: var(--accent); }
+    .size-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+    .reader-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-family: var(--body);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .reader-btn:hover { border-color: var(--accent); background: rgba(0,200,150,0.07); }
+    .reader-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .transcript-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      background: rgba(229,168,35,0.08);
+      border: 1px solid rgba(229,168,35,0.15);
+      border-radius: 6px;
+    }
+    .transcript-note strong { color: var(--gold); font-weight: 600; }
+
     /* --- Theme toggle --- */
     .theme-toggle {
       background: var(--surface);
@@ -975,6 +1077,27 @@
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
   </button>
+  <div class="a11y-wrap">
+    <button class="a11y-btn" onclick="toggleA11yPanel()" aria-label="Accessibility options" title="Accessibility">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="4.5" r="2.5"/><path d="M12 7v6m0 0l-3 7m3-7l3 7"/><path d="M5 10c2.3-.8 4.6-1.2 7-1.2s4.7.4 7 1.2"/>
+      </svg>
+    </button>
+    <div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="Accessibility settings">
+      <div class="a11y-section">
+        <span class="a11y-label">Text Size</span>
+        <div class="a11y-btns">
+          <button class="size-btn active" data-size="100" onclick="setScale(100)">A</button>
+          <button class="size-btn" data-size="120" onclick="setScale(120)">A+</button>
+          <button class="size-btn" data-size="140" onclick="setScale(140)">A++</button>
+        </div>
+      </div>
+      <div class="a11y-section">
+        <span class="a11y-label">Read Aloud</span>
+        <button class="reader-btn" id="readerBtn" onclick="toggleReader()">&#9654; Read Page</button>
+      </div>
+    </div>
+  </div>
   <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">
     <svg id="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <line x1="3" y1="6" x2="21" y2="6"/>
@@ -1259,8 +1382,8 @@ NOTE FOR WORKSHOP: This assignment has intentional equity gaps — limited persp
           <div class="step-item"><div class="step-badge">4</div><div>Copy the quiz questions directly into Canvas New Quizzes. Save as a Prompt File for future lectures.</div></div>
           <div class="sample-block">
             <div class="sample-header"><span class="sample-label">Sample Lecture Video</span><a href="sample-lecture.mp4" download class="copy-btn" style="text-decoration:none;">Download .mp4</a></div>
-            <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Upload this video to AI Studio via the paperclip icon. If the upload is slow, paste the transcript below instead.</p>
-            <div class="sample-header" style="margin-top:8px;"><span class="sample-label">Backup: Paste-Ready Transcript</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
+            <div class="transcript-note"><strong>Hearing-impaired?</strong> A full text transcript is provided below. You can paste it directly into AI Studio instead of uploading the video.</div>
+            <div class="sample-header"><span class="sample-label" id="p03-transcript">Full Transcript — Week 6 Overview</span><button class="copy-btn" onclick="copyData(this)">Copy</button></div>
             <div class="sample-text">[00:00] Welcome back everyone. Today we're covering Chapter 6 — photosynthesis.
 
 [01:15] What is photosynthesis? Plants convert light energy into chemical energy. The equation: 6CO2 + 6H2O + light → C6H12O6 + 6O2.
@@ -1485,6 +1608,80 @@ FOLLOW-UP PROMPTS:
     };
 
     applyTheme(localStorage.getItem('sac-theme') || 'dark');
+
+    // --- Accessibility panel ---
+    window.toggleA11yPanel = function() {
+      document.getElementById('a11yPanel').classList.toggle('open');
+    };
+
+    // --- Text scaling ---
+    window.setScale = function(pct) {
+      var main = document.getElementById('main');
+      if (main) main.style.zoom = pct / 100;
+      localStorage.setItem('sac-text-size', pct);
+      document.querySelectorAll('.size-btn').forEach(function(b) {
+        b.classList.toggle('active', Number(b.dataset.size) === pct);
+      });
+    };
+    var savedScale = Number(localStorage.getItem('sac-text-size')) || 100;
+    if (savedScale !== 100) {
+      var main = document.getElementById('main');
+      if (main) main.style.zoom = savedScale / 100;
+    }
+    setTimeout(function() {
+      document.querySelectorAll('.size-btn').forEach(function(b) {
+        b.classList.toggle('active', Number(b.dataset.size) === savedScale);
+      });
+    }, 0);
+
+    // --- Read aloud (Web Speech API) ---
+    var isReading = false;
+    window.toggleReader = function() {
+      var btn = document.getElementById('readerBtn');
+      if (!('speechSynthesis' in window)) {
+        btn.textContent = 'Not supported';
+        return;
+      }
+      if (isReading) {
+        speechSynthesis.cancel();
+        isReading = false;
+        btn.innerHTML = '&#9654; Read Page';
+        btn.classList.remove('active');
+      } else {
+        var text = document.getElementById('main').innerText;
+        var chunks = [];
+        var maxLen = 4000;
+        for (var i = 0; i < text.length; i += maxLen) {
+          chunks.push(text.substring(i, i + maxLen));
+        }
+        var idx = 0;
+        function speakNext() {
+          if (idx >= chunks.length || !isReading) {
+            isReading = false;
+            btn.innerHTML = '&#9654; Read Page';
+            btn.classList.remove('active');
+            return;
+          }
+          var utter = new SpeechSynthesisUtterance(chunks[idx]);
+          utter.rate = 0.95;
+          utter.onend = function() { idx++; speakNext(); };
+          utter.onerror = function() { isReading = false; btn.innerHTML = '&#9654; Read Page'; btn.classList.remove('active'); };
+          speechSynthesis.speak(utter);
+        }
+        isReading = true;
+        btn.innerHTML = '&#9632; Stop Reading';
+        btn.classList.add('active');
+        speakNext();
+      }
+    };
+
+    // Close a11y panel on outside click
+    document.addEventListener('click', function(e) {
+      var panel = document.getElementById('a11yPanel');
+      if (panel && panel.classList.contains('open') && !e.target.closest('.a11y-wrap')) {
+        panel.classList.remove('open');
+      }
+    });
 
     var progressEl = document.getElementById('progress');
     var ticking = false;
