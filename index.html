@@ -622,32 +622,70 @@
       margin-top: 2rem;
     }
 
-    .temp-label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
+    .temp-explainer {
+      font-size: 14px;
       color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .temp-scale {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .temp-range {
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+    }
+    .temp-range.low { background: rgba(79,195,247,0.06); border-color: rgba(79,195,247,0.15); }
+    .temp-range.mid { background: rgba(0,200,150,0.06); border-color: rgba(0,200,150,0.15); }
+    .temp-range.high { background: rgba(255,152,0,0.06); border-color: rgba(255,152,0,0.15); }
+
+    .temp-val {
+      font-family: var(--heading);
+      font-weight: 700;
+      font-size: 15px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .temp-range.low .temp-val { color: #4fc3f7; }
+    .temp-range.mid .temp-val { color: #00c896; }
+    .temp-range.high .temp-val { color: #ff9800; }
+
+    .temp-name {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: block;
       margin-bottom: 8px;
     }
 
-    .temp-slider-wrap {
-      height: 6px;
-      border-radius: 3px;
-      background: linear-gradient(90deg, #4fc3f7, #00c896, #ff9800, #e53935);
-      margin-bottom: 1.5rem;
-      position: relative;
+    .temp-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      line-height: 1.5;
     }
 
-    .temp-cases {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+    .temp-range ul { list-style: none; font-size: 12px; color: var(--muted); line-height: 1.7; }
+    .temp-range ul li::before { content: '\2192\00a0'; color: var(--accent); }
+
+    .temp-tip {
+      margin-top: 1rem;
       font-size: 13px;
+      color: var(--muted);
+      padding: 10px 14px;
+      background: var(--surface2);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.55;
     }
-
-    .temp-case h4 { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
-    .temp-case ul { list-style: none; color: var(--muted); font-size: 12px; line-height: 1.7; }
-    .temp-case ul li::before { content: '\2192\00a0'; color: var(--accent); }
+    .temp-tip strong { color: var(--accent); font-weight: 600; }
 
     .system-instr-box {
       margin-top: 1.5rem;
@@ -842,7 +880,7 @@
       .projects-grid { grid-template-columns: 1fr; }
       .project-card:hover { transform: none; }
       .checklist-grid { grid-template-columns: 1fr; }
-      .temp-cases { grid-template-columns: 1fr; }
+      .temp-scale { grid-template-columns: 1fr; }
       .section-lead { font-size: 14px; margin-bottom: 2rem; }
       .btn-primary, .btn-outline { padding: 11px 24px; font-size: 13px; }
     }
@@ -1549,19 +1587,45 @@ FOLLOW-UP PROMPTS:
     <p class="section-lead">The two settings that change everything: System Instructions and Temperature.</p>
   </div>
   <div class="temp-guide reveal">
-    <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:1rem;">Temperature Guide</h3>
-    <div class="temp-label-row"><span>0.0 — Precise & Consistent</span><span>1.0 — Creative & Varied</span></div>
-    <div class="temp-slider-wrap"></div>
-    <div class="temp-cases">
-      <div class="temp-case">
-        <h4 style="color:#4fc3f7;">Use 0.0 – 0.3 for:</h4>
-        <ul><li>Grading rubrics</li><li>Data extraction from PDFs</li><li>Action item tables</li><li>Transfer requirement charts</li><li>Quiz question generation</li></ul>
+    <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:0.5rem;">What Is Temperature?</h3>
+    <p class="temp-explainer">Temperature is a single dial in AI Studio (found in the right sidebar) that controls <strong style="color:var(--text);">how predictable or creative</strong> the AI's response will be. Turn it <em>down</em> when you need the same reliable answer every time. Turn it <em>up</em> when you want fresh, surprising ideas.</p>
+    <div class="temp-scale">
+      <div class="temp-range low">
+        <span class="temp-val">0.0 – 0.3</span>
+        <span class="temp-name">Focused &amp; Factual</span>
+        <p class="temp-desc">The AI gives nearly the same answer every time. Best when you need accuracy and consistency.</p>
+        <ul>
+          <li>Grading rubrics</li>
+          <li>Data extraction from PDFs</li>
+          <li>Action-item tables</li>
+          <li>Transfer requirement charts</li>
+          <li>Quiz question generation</li>
+        </ul>
       </div>
-      <div class="temp-case">
-        <h4 style="color:#ff9800;">Use 0.7 – 1.0 for:</h4>
-        <ul><li>Brainstorming lesson ideas</li><li>Rewriting assignments creatively</li><li>Generating diverse student examples</li><li>Writing equity audit suggestions</li><li>Building Socratic tutor personas</li></ul>
+      <div class="temp-range mid">
+        <span class="temp-val">0.4 – 0.6</span>
+        <span class="temp-name">Balanced</span>
+        <p class="temp-desc">A safe default. Reliable enough for routine work, flexible enough to feel natural.</p>
+        <ul>
+          <li>Summarizing meetings</li>
+          <li>Rewriting assignment prompts</li>
+          <li>General Q&amp;A tasks</li>
+          <li>Drafting student emails</li>
+        </ul>
+      </div>
+      <div class="temp-range high">
+        <span class="temp-val">0.7 – 1.0</span>
+        <span class="temp-name">Creative &amp; Varied</span>
+        <p class="temp-desc">Each response is noticeably different. Best when you want ideas, not exact answers.</p>
+        <ul>
+          <li>Brainstorming lesson ideas</li>
+          <li>Generating diverse examples</li>
+          <li>Equity audit suggestions</li>
+          <li>Building tutor personas</li>
+        </ul>
       </div>
     </div>
+    <p class="temp-tip"><strong>Quick rule:</strong> Need the same answer every time? Go low. Want to be surprised? Go high. Not sure? Start at 0.5 and adjust.</p>
   </div>
   <div class="system-instr-box reveal">
     <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:1rem;">System Instructions Formula</h3>
